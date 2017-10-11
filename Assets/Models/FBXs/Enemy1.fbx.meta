@@ -1,17 +1,22 @@
 fileFormatVersion: 2
-guid: 8344aa3734a21984f84226000bfc6d85
-timeCreated: 1507731817
+guid: 586cc71d7adb8c3439f8bb9f04cb6d02
+timeCreated: 1507732624
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: default
-    100002: //RootNode
-    400000: default
-    400002: //RootNode
-    2300000: default
-    3300000: default
-    4300000: default
+    100000: //RootNode
+    100002: lowman_shoes.001
+    100004: Sphere
+    400000: //RootNode
+    400002: lowman_shoes.001
+    400004: Sphere
+    2300000: lowman_shoes.001
+    2300002: Sphere
+    3300000: lowman_shoes.001
+    3300002: Sphere
+    4300000: Sphere
+    4300002: lowman_shoes.001
   materials:
     importMaterials: 1
     materialName: 0
