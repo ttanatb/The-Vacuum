@@ -34,12 +34,15 @@ public class PlayerMovement : MonoBehaviour
     public uint frameCounter = 20;
     Quaternion startingRot;
 
+    private GameObject cameraObj;
+
     //Position
     void Start()
     {
         position = gameObject.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
 
+        cameraObj = GetComponentInChildren<Camera>().gameObject;
         startingRot = transform.rotation;
     }
 
@@ -116,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion yRot = Quaternion.AngleAxis(avgRotY, Vector3.left);
         Quaternion xRot = Quaternion.AngleAxis(avgRotX, Vector3.up);
 
-        transform.rotation = startingRot * xRot * yRot;
+        cameraObj.transform.rotation = startingRot * xRot * yRot;
     }
 
     
