@@ -10,17 +10,21 @@ public class PlayerMovement : MonoBehaviour
     //to be modified by speed
     private Vector3 finalVector;
     // Use this for initialization
-
+    public Vector3 position;
     //Position
     void Start()
     {
-        gameObject.transform.position += finalVector;
+        position = gameObject.transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        PlayerInput();
+        position += finalVector*speed;
+        finalVector = Vector3.zero;
+        gameObject.transform.position = position;
     }
 
     void PlayerInput()
