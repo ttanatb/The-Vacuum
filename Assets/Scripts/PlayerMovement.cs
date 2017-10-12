@@ -7,8 +7,8 @@ public class PlayerMovement : MonoBehaviour
 {
     //editable speed vector
     public float speed = 1.0f;
-   
-    
+
+
     public Vector3 position;
 
     private List<float> rotListX = new List<float>();
@@ -30,19 +30,20 @@ public class PlayerMovement : MonoBehaviour
     private float rotY = 0f;
 
     public uint frameCounter = 20;
-    Quaternion startingRot;
 
     private GameObject cameraObj;
+    Quaternion cameraStartingRot;
+    Quaternion playerObjStartingRot;
 
     //Position
     void Start()
     {
-        
         position = gameObject.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
 
         cameraObj = GetComponentInChildren<Camera>().gameObject;
-        startingRot = transform.rotation;
+        cameraStartingRot = cameraObj.transform.rotation;
+        playerObjStartingRot = transform.rotation;
     }
 
     // Update is called once per frame
@@ -54,8 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerInput()
     {
-     
-        transform.Translate(Vector3.ProjectOnPlane(transform.forward, Vector3.down) * Input.GetAxis("Vertical") * speed, Space.World);
+        transform.Translate(transform.forward * Input.GetAxis("Vertical") * speed, Space.World);
         transform.Translate(transform.right * Input.GetAxis("Horizontal") * speed, Space.World);
     }
 
@@ -96,12 +96,12 @@ public class PlayerMovement : MonoBehaviour
         Quaternion xRot = Quaternion.AngleAxis(avgRotX, Vector3.up);
 
         //Rotating camera around x axis
-        cameraObj.transform.rotation = startingRot * xRot*yRot;
+        cameraObj.transform.rotation = cameraStartingRot * xRot * yRot;
+        transform.rotation = playerObjStartingRot * xRot;
         //Rotating player around y axis
-      
     }
 
-    
+
     private float ClampAngle(float angle, float min, float max)
     {
         angle %= 360;
