@@ -7,10 +7,8 @@ public class PlayerMovement : MonoBehaviour
 {
     //editable speed vector
     public float speed = 1.0f;
-    //Final vector, should be unit vector 
-    //to be modified by speed
-    private Vector3 finalVector;
-    // Use this for initialization
+   
+    
     public Vector3 position;
 
     private List<float> rotListX = new List<float>();
@@ -39,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     //Position
     void Start()
     {
+        
         position = gameObject.transform.position;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -50,35 +49,12 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         PlayerInput();
-        position += finalVector * speed;
-        finalVector = Vector3.zero;
-        //gameObject.transform.position = position;
-
         UpdateDirection();
     }
 
     void PlayerInput()
     {
-        Vector3 temp = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            temp += new Vector3(0, 0, 1);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            temp += new Vector3(0, 0, -1);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            temp += new Vector3(-1, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            temp += new Vector3(1, 0, 0);
-        }
-
-        finalVector = Vector3.Normalize(temp);
-
+     
         transform.Translate(Vector3.ProjectOnPlane(transform.forward, Vector3.down) * Input.GetAxis("Vertical") * speed, Space.World);
         transform.Translate(transform.right * Input.GetAxis("Horizontal") * speed, Space.World);
     }
@@ -119,7 +95,10 @@ public class PlayerMovement : MonoBehaviour
         Quaternion yRot = Quaternion.AngleAxis(avgRotY, Vector3.left);
         Quaternion xRot = Quaternion.AngleAxis(avgRotX, Vector3.up);
 
-        cameraObj.transform.rotation = startingRot * xRot * yRot;
+        //Rotating camera around x axis
+        cameraObj.transform.rotation = startingRot * xRot*yRot;
+        //Rotating player around y axis
+      
     }
 
     
