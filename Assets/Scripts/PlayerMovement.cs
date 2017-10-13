@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //editable speed vector
     public float speed = 1.0f;
-
+    public float maxSpeed = 2f;
 
     public Vector3 position;
 
@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     Quaternion cameraStartingRot;
     Quaternion playerObjStartingRot;
 
+    private Rigidbody rigidBody;
+
     //Position
     void Start()
     {
@@ -44,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
         cameraObj = GetComponentInChildren<Camera>().gameObject;
         cameraStartingRot = cameraObj.transform.rotation;
         playerObjStartingRot = transform.rotation;
+
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -55,8 +59,12 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerInput()
     {
-        transform.Translate(transform.forward * Input.GetAxis("Vertical") * speed, Space.World);
-        transform.Translate(transform.right * Input.GetAxis("Horizontal") * speed, Space.World);
+        Vector3 vel = rigidBody.velocity;
+        vel += transform.forward * Input.GetAxis("Vertical") * speed;
+        vel += transform.right * Input.GetAxis("Horizontal") * speed;
+        vel = Vector3.ClampMagnitude(vel, maxSpeed);
+
+        rigidBody.velocity = vel;
     }
 
     void UpdateDirection()

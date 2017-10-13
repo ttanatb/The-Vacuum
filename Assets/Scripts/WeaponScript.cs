@@ -41,7 +41,7 @@ public class WeaponScript : MonoBehaviour
     void Fire()
     {
         //make a projectile
-        GameObject.Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+        GameObject.Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
 
         //start the timer
         timer += Time.deltaTime;
