@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour {
     public Rigidbody toSeek;
@@ -14,10 +15,11 @@ public class EnemyScript : MonoBehaviour {
     public int Health;
     private bool isActive = true;
     private Rigidbody myBody;
-
+    private NavMeshAgent myAgent;
     // Use this for initialization
     void Start () {
         myBody = GetComponent<Rigidbody>();
+        myAgent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
@@ -26,8 +28,9 @@ public class EnemyScript : MonoBehaviour {
 
         if (isActive && toSeek != null)
         {   
-            destination = toSeek.transform.position;
-            //later on change this players tile, then nearest waypoint, then actual position.        
+            myAgent.destination = toSeek.transform.position;
+            /*
+            //later on change this players tile, then nearest waypoint, then actual position.  /   
             Vector3 goalSpeed = destination - this.transform.position;
             shouldDodge = false;
             if (goalSpeed.sqrMagnitude > 25)
@@ -41,9 +44,10 @@ public class EnemyScript : MonoBehaviour {
             if (shouldDodge)
             {
                 Dodge();
-            }
+            } 
+            */
             //update the actual position
-            myBody.transform.position += velocity;
+            //myBody.transform.position += velocity;
         }
     }
 
