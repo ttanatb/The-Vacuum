@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public class EnemyScript : MonoBehaviour {
     public Rigidbody toSeek;
     public GameObject currentTile;
-    public float maxSpeed;
-    public float maxAccel;
     public float maxDodge;
     Vector3 velocity;
     Vector3 destination;
@@ -29,25 +27,8 @@ public class EnemyScript : MonoBehaviour {
         if (isActive && toSeek != null)
         {   
             myAgent.destination = toSeek.transform.position;
-            /*
-            //later on change this players tile, then nearest waypoint, then actual position.  /   
-            Vector3 goalSpeed = destination - this.transform.position;
-            shouldDodge = false;
-            if (goalSpeed.sqrMagnitude > 25)
-            {
-                shouldDodge = true;
-            }
-            goalSpeed.Normalize();
-            goalSpeed = goalSpeed * Time.deltaTime;
-            velocity += Vector3.ClampMagnitude(goalSpeed, maxAccel);
-            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-            if (shouldDodge)
-            {
-                Dodge();
-            } 
-            */
-            //update the actual position
-            //myBody.transform.position += velocity;
+         
+           
         }
     }
 
