@@ -8,7 +8,21 @@ public class ClickToLoadAsync : MonoBehaviour {
     public Slider loadingBar;
     public GameObject loadingImage;
 
+    private GameObject gameManager;
+
     private AsyncOperation async;
+
+
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager");
+    }
+
+    public void ResumeClick()
+    {
+        gameManager.GetComponent<GameManagerScript>().PauseHandling();
+    }
+
 
 
     /// <summary>
