@@ -22,7 +22,7 @@ public class WeaponScript : MonoBehaviour
         //if the timer isn't running it can fire
         if (timer == 0)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0)
             {
                 Fire();
             }
@@ -43,7 +43,7 @@ public class WeaponScript : MonoBehaviour
     {
         //make a projectile
         GameObject.Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation);
-
+        wEnergy--;
         //start the timer
         timer += Time.deltaTime;
     }

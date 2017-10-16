@@ -41,8 +41,9 @@ public class ProjectileScript : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //further coding will happen here with enemies, or we may want to handle that in enemy script
-        //For now, we destory the projectile
-        Debug.Log("We Hit something");
+       //For now, we destory the projectile
+        
+        Debug.Log("We Hit something " + collision.gameObject);
         Destroy(gameObject);
 
     }
