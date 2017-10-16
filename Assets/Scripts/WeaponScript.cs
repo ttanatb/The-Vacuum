@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class WeaponScript : MonoBehaviour
 {
-    private int ammo;
+    private int wEnergy;
     public GameObject projectile;
-    public float fireRate;
+    public float wFireRate;
     public float timer;
+    public float wRechargeRate;
     // Use this for initialization
     void Start()
     {
-        ammo = 50;
+        wEnergy = 10;
     }
 
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class WeaponScript : MonoBehaviour
         else if (timer > 0)
         {
             timer += Time.deltaTime;
-            if (timer >= 1.0f / fireRate)
+            if (timer >= 1.0f / wFireRate)
             {
                 timer = 0;
             }
@@ -41,9 +42,14 @@ public class WeaponScript : MonoBehaviour
     void Fire()
     {
         //make a projectile
-        GameObject.Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
+        GameObject.Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation);
 
         //start the timer
         timer += Time.deltaTime;
+    }
+
+    int WEnergy()
+    {
+        return wEnergy;
     }
 }
