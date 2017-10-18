@@ -23,8 +23,6 @@ public class GameManagerScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-
-
         // Start the gamestate in play
         gameState = gamestate.play;
 
@@ -36,8 +34,10 @@ public class GameManagerScript : MonoBehaviour
 	void Update ()
     {
         // Call the pause handling helper method
-        PauseHandling();
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseHandling();
+        }
 	}
 
     /// <summary>
@@ -45,36 +45,35 @@ public class GameManagerScript : MonoBehaviour
     /// </summary>
     public void PauseHandling()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+        // If you are playing currently
+        if (gameState == gamestate.play)
         {
-            // If you are playing currently
-            if (gameState == gamestate.play)
-            {
-                // Pause the game
-                Time.timeScale = 0;
+            // Pause the game
+            Time.timeScale = 0;
 
-                // Change the Game State to paused
-                gameState = gamestate.paused;
+            // Change the Game State to paused
+            gameState = gamestate.paused;
 
-                // unlock and show curser
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+            // unlock and show curser
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
-            }
-            // If you are paused resume the game
-            else if (gameState == gamestate.paused)
-            {
-                // Resume the game
-                Time.timeScale = 1;
-
-                // Change the Game State to paused
-                gameState = gamestate.play;
-
-                // Lock and hide the curser
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
         }
+        // If you are paused resume the game
+        else if (gameState == gamestate.paused)
+        {
+            // Resume the game
+            Time.timeScale = 1;
+
+            // Change the Game State to paused
+            gameState = gamestate.play;
+
+            // Lock and hide the curser
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
     }
 
 }
