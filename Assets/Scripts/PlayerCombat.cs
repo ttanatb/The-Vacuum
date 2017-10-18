@@ -10,13 +10,20 @@ public class PlayerCombat : MonoBehaviour {
     private float pInvunerability; //stores how long the player is invunerable after being hit
     private int pEnergy;
     public float pRechargeRate;
-    public float pEnergyMax;
+    public int pEnergyMax;
     private float rechargeTimer;
     // Use this for initialization
     void Start() {
 
+
         pHealth = 3;
-        pEnergy = 10;
+
+        //make sure the max energy is set
+        if (pEnergyMax <= 0)
+        {
+            pEnergyMax = 10;
+        }
+        pEnergy = pEnergyMax;       
         pScore = 0;
         rechargeTimer = 0;
     }
@@ -88,6 +95,7 @@ public class PlayerCombat : MonoBehaviour {
     public uint PScore
     {
         get { return pScore; }
+        set { pScore = value; }
     }
 
     /// <summary>
