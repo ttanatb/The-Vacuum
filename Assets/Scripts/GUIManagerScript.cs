@@ -24,6 +24,8 @@ public class GUIManagerScript : MonoBehaviour
     private int maxEnergy;
     private int currentEnergy;
     public Slider energyBar;
+    public GameObject energyFill;
+    private bool energyActive;
 
 	// Use this for initialization
 	void Start ()
@@ -35,8 +37,8 @@ public class GUIManagerScript : MonoBehaviour
 
 
         // Set max health and energy for guns
-        maxHealth = player.GetComponent<PlayerCombat>().PHealth();
-        maxEnergy = player.GetComponent<PlayerCombat>().PHealth();
+        maxHealth = player.GetComponent<PlayerCombat>().PHealth;
+        maxEnergy = player.GetComponent<PlayerCombat>().PEnergy;
         healthBar.maxValue = maxHealth;
         energyBar.maxValue = maxEnergy;
     }
@@ -45,12 +47,12 @@ public class GUIManagerScript : MonoBehaviour
 	void Update ()
     {
         // Get current values for the GUI bars
-        currentHealth = player.GetComponent<PlayerCombat>().PHealth();
-        currentEnergy = player.GetComponent<PlayerCombat>().PHealth();
+        currentHealth = player.GetComponent<PlayerCombat>().PHealth;
+        currentEnergy = player.GetComponent<PlayerCombat>().PEnergy;
 
         // Set the bars to those current values
         healthBar.value = currentHealth;
-        energyBar.value = currentHealth;
+        energyBar.value = currentEnergy;
 
         // Check for activating the pause menu
         if(gameManager.GetComponent<GameManagerScript>().GameState == gamestate.paused)
@@ -62,5 +64,19 @@ public class GUIManagerScript : MonoBehaviour
             pauseMenu.SetActive(false);
         }
 
+        EmptyBarCheck();
     }
+
+    void EmptyBarCheck()
+    {
+        if(currentEnergy <= 0)
+        {
+            energyFill.SetActive(false);
+        }
+        else if(energyFill.activeSelf == false && currentEnergy>0)
+        {
+            energyFill.SetActive(true);
+        }
+    }
+
 }

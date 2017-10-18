@@ -40,8 +40,6 @@ public class PlayerMovement : MonoBehaviour
     //Position
     void Start()
     {
-        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
-        {
             position = gameObject.transform.position;
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -50,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
             playerObjStartingRot = transform.rotation;
 
             rigidBody = GetComponent<Rigidbody>();
-        }
     }
 
     // Update is called once per frame
