@@ -25,8 +25,6 @@ public class GUIManagerScript : MonoBehaviour
     private int currentEnergy;
     public Slider energyBar;
 
-
-
 	// Use this for initialization
 	void Start ()
     {
