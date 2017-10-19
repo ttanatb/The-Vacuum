@@ -7,9 +7,9 @@ public class EnemyScript : MonoBehaviour {
     public Rigidbody toSeek;       
     public int outDamage =2;
     public int Health;
-    private bool isActive = true;
-    private Rigidbody myBody;
-    private NavMeshAgent myAgent;
+    public bool isActive = true;
+    public Rigidbody myBody;
+    public NavMeshAgent myAgent;
     // Use this for initialization
     void Start () {
         myBody = GetComponent<Rigidbody>();
@@ -26,7 +26,7 @@ public class EnemyScript : MonoBehaviour {
         }
     }
 
-    void TakeDamage(int incDamage)//damage for object to take in
+   public void TakeDamage(int incDamage)//damage for object to take in
     {
         Health -= incDamage;
         if(Health <= 0)

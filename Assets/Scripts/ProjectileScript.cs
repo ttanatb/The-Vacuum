@@ -7,6 +7,7 @@ public class ProjectileScript : MonoBehaviour
     public float speed;
     public float gravityMultiplier;
     public float lifeSpan;
+    public int outDamage = 2;
     private Vector3 position;
     private Vector3 velocity;
     private float timer;
@@ -40,8 +41,16 @@ public class ProjectileScript : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject);
+
         //further coding will happen here with enemies, or we may want to handle that in enemy script
         //For now, we destory the projectile
+        if (collision.gameObject.tag == "Enemy")
+        {
+            EnemyScript eScript = collision.gameObject.GetComponent<EnemyScript>();
+            eScript.TakeDamage(outDamage);
+        }
+
         if (collision.gameObject.tag != "Player") {
             Debug.Log("We Hit something " + collision.gameObject.tag);
             Destroy(gameObject);
