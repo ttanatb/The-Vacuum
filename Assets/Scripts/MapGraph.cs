@@ -2,75 +2,113 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGraph : MonoBehaviour
+public class MapGraph : SingletonMonoBehaviour<MapGraph>
 {
+    public Transform player;
+
     public GameObject[] roomPrefabs;
-    private MapNode startingNode;
+
+    [SerializeField]
+    private MapNode[] nodes;
 
     private int nodeCount = 25;
 
     [SerializeField]
     GameObject[] gameObjects;
 
+    private MapNode currNode;
+
     // Use this for initialization
     void Start()
     {
         Object[] objs = FindObjectsOfType<Room>();
         gameObjects = new GameObject[objs.Length];
-        for(int i = 0; i < gameObjects.Length; i++)
+        nodes = new MapNode[objs.Length];
+        for (int i = 0; i < gameObjects.Length; i++)
         {
             gameObjects[i] = (objs[i] as Room).gameObject;
+            nodes[i] = new MapNode(objs[i] as Room);
         }
 
-        //startingNode = new MapNode(Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)]).GetComponent<Room>());
+        for (int i = 0; i < nodes.Length; i++)
+        {
+            Vector3[] surroundingPos = nodes[i].data.GetConnectingPos();
+            List<MapNode> neighbors = new List<MapNode>();
 
-        //MapNode currNode = startingNode;
-        //for (int i = 1; i < nodeCount; i++)
-        //{
-        //    currNode.exits[0] = new MapNode(Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)]).GetComponent<Room>());
-        //    Connect(currNode.data, 0, currNode.exits[0].data);
+            for (int j = 0; j < nodes.Length; j++)
+            {
+                for (int k = 0; k < surroundingPos.Length; k++)
+                {
+                    surroundingPos[k].y = nodes[j].data.transform.position.y;
+                    if ((surroundingPos[k] - nodes[j].data.transform.position).sqrMagnitude < 0.1f)
+                    {
+                        neighbors.Add(nodes[j]);
+                    }
+                }
+            }
 
-        //    currNode = currNode.exits[0];
-        //}
+            nodes[i].neighbors = neighbors.ToArray();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     private void OnDrawGizmos()
     {
         Vector3 scale = Vector3.one * 0.3f;
-        for (int i = 0; i < gameObjects.Length; i++)
+        for (int i = 0; i < nodes.Length; i++)
         {
-            Gizmos.DrawCube(gameObjects[i].transform.position, scale);
+            if (!nodes[i].visited)
+            {
+                Color c = Color.white;
+                c.a = 0.2f;
+                Gizmos.color = c;
+            }
+            else
+            {
+                Color c = Color.black;
+                c.a = 0.2f;
+                Gizmos.color = c;
+            }
+
+            Gizmos.DrawSphere(nodes[i].data.transform.position, 0.5f);
+        }
+
+        if (currNode != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(currNode.data.transform.position, scale);
+
+            Gizmos.color = Color.red;
+            foreach (MapNode n in currNode.neighbors)
+            {
+                Gizmos.DrawCube(n.data.transform.position, scale);
+            }
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(currNode.data.transform.position, scale);
         }
     }
 
-    //private void Connect(Room exitRm, int exitIndex, Room entranceRm)
-    //{
-    //    entranceRm.entrance.position = exitRm.exits[exitIndex].position;
-    //    entranceRm.entrance.rotation = exitRm.exits[exitIndex].rotation;
-
-    //    entranceRm.RepositionToEntrance();
-    //}
+    public void SetCurrentNode(MapNode n)
+    {
+        currNode = n;
+        currNode.visited = true;
+    }
 }
-
 
 public class MapNode
 {
     public Room data;
-
-    int exitCount;
-    public MapNode entrance;
-    public MapNode[] exits;
+    public MapNode[] neighbors;
+    public bool visited = false;
 
     public MapNode(Room room)
     {
         data = room;
-        //exitCount = room.exits.Length;
-        exits = new MapNode[exitCount];
+        room.SetAssociatedNode(this);
     }
 }

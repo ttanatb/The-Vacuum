@@ -2,26 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RoomType
+{
+    Straight,
+    Turn,
+    T
+}
+
 public class Room : MonoBehaviour
 {
-    public enum RoomType
-    {
-        Straight,
-        Turn,
-        T
-    }
-
-
     public RoomType type;
-
-    //public Transform entrance;
-    //public Transform[] exits = new Transform[0];
-
-    //private Vector3 entranceOrigLocalPos;
-    //private Vector3 exitOrigLocalPos;
-
-    //private Quaternion entranceOrigLocalRot;
-    //private Vector3 exitOrigForward;
+    MapNode node;
 
     public void Start()
     {
@@ -39,71 +30,18 @@ public class Room : MonoBehaviour
         }
     }
 
-    /*
-    // Use this for initialization
-    //void Awake()
-    //{
-    //    if (!entrance)
-    //    {
-    //        for(int i = 0; i< transform.childCount; i++)
-    //        {
-    //            Transform child = transform.GetChild(i);
-    //            if (child.name.Contains("Entrance"))
-    //            {
-    //                entrance = child;
-    //                break;
-    //            }
-    //        }
-    //    }
-
-    //    entranceOrigLocalPos = entrance.localPosition;
-    //    entranceOrigLocalRot = entrance.localRotation;
-
-    //    if (exits.Length == 0)
-    //    {
-    //        List<Transform> currExits = new List<Transform>();
-    //        for (int i = 0; i < transform.childCount; i++)
-    //        {
-    //            Transform child = transform.GetChild(i);
-    //            if (child.name.Contains("Exit"))
-    //            {
-    //                currExits.Add(child);
-    //            }
-    //        }
-
-    //        exits = currExits.ToArray();
-    //    }
-
-    //    //exitOrigLocalPos = exit.localPosition;
-    //    //exitOrigForward = exit.forward;
-    //}
-
-    //public void RepositionToEntrance()
-    //{
-    //    transform.Translate(entrance.localPosition - entranceOrigLocalPos);
-    //    entrance.localPosition = entranceOrigLocalPos;
-    //    Vector3 entrPos = entrance.position;
-    //    Quaternion q = Quaternion.Inverse(entranceOrigLocalRot) * entrance.localRotation;
-    //    transform.rotation = q * transform.rotation;
-    //    entrance.localRotation = entranceOrigLocalRot;
-    //    transform.Translate(entrPos - entrance.position, Space.World);
-    //}
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.D))
-    //        RepositionToEntrance();
-    //}
-    */
-
+    public void SetAssociatedNode(MapNode n)
+    {
+        node = n;
+    }
 
     private void Update()
     {
         switch (type)
         {
             case RoomType.Straight:
-                Debug.DrawLine(transform.position, transform.position + transform.up, Color.green);
-                Debug.DrawLine(transform.position, transform.position - transform.up, Color.green);
+                //Debug.DrawLine(transform.position, transform.position + transform.up, Color.green);
+                //Debug.DrawLine(transform.position, transform.position - transform.up, Color.green);
                 break;
             case RoomType.Turn:
                 Debug.DrawLine(transform.position, transform.position + transform.right, Color.red);
@@ -117,8 +55,39 @@ public class Room : MonoBehaviour
 
                 break;
         }
-        //Debug.DrawLine(transform.position, transform.position + transform.up, Color.green);
+    }
 
-        //Debug.DrawLine(transform.position, transform.position + transform.forward);
+    public Vector3[] GetConnectingPos()
+    {
+        Vector3[] positions = null;
+        switch(type)
+        {
+            case RoomType.Straight:
+                positions = new Vector3[2];
+                positions[0] = transform.position + transform.up * 2f;
+                positions[1] = transform.position - transform.up * 2f;
+                break;
+            case RoomType.Turn:
+                positions = new Vector3[2];
+                positions[0] = transform.position + transform.right * 2f;
+                positions[1] = transform.position - transform.up * 2f;
+                break;
+            case RoomType.T:
+                positions = new Vector3[2];
+                positions[0] = transform.position - transform.right * 2f;
+                positions[1] = transform.position - transform.up * 2f;
+                positions[2] = transform.position + transform.up * 2f;
+                break;
+        }
+
+        return positions;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            MapGraph.Instance.SetCurrentNode(node);
+        }
     }
 }
