@@ -40,7 +40,7 @@ public class EnemyScript : MonoBehaviour {
     {
         if(otherObject.gameObject.tag == "Player")
         {
-           EnemyScript otherScript = otherObject.gameObject.GetComponent<EnemyScript>();
+           PlayerCombat otherScript = otherObject.gameObject.GetComponent<PlayerCombat>();
             otherScript.TakeDamage(outDamage);
         }
 
