@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class WeaponScript : MonoBehaviour
 {
-    private int wEnergy;
+   
     public GameObject projectile;
     public float wFireRate;
-    public float timer;
-    public float wRechargeRate;
+    private float fireTimer;
+    private GameObject player;
+    private PlayerCombat playerCombat;
+    
     // Use this for initialization
     void Start()
     {
-        wEnergy = 10;
+        player = gameObject.transform.parent.gameObject;
+        playerCombat = player.GetComponent<PlayerCombat>();
     }
 
     // Update is called once per frame
@@ -20,36 +23,36 @@ public class WeaponScript : MonoBehaviour
     {
         //timer is checked to set fire rate
         //if the timer isn't running it can fire
-        if (timer == 0)
+        if (fireTimer == 0)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0)&&playerCombat.PEnergy>0)
             {
                 Fire();
             }
             //if the timer is running, update time
         }
-        else if (timer > 0)
+        else if (fireTimer > 0)
         {
-            timer += Time.deltaTime;
-            if (timer >= 1.0f / wFireRate)
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= 1.0f / wFireRate)
             {
-                timer = 0;
+                fireTimer = 0;
             }
         }
+      
 
     }
-    //For when the player fire's the gun
+   /// <summary>
+   /// handles the firing of the player's weapon
+   /// makes a projectile reduces the energy and starts the firerate timer
+   /// </summary>
     void Fire()
     {
         //make a projectile
         GameObject.Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation);
-
+        playerCombat.PEnergy--;
         //start the timer
-        timer += Time.deltaTime;
+        fireTimer += Time.deltaTime;
     }
 
-    int WEnergy()
-    {
-        return wEnergy;
-    }
 }

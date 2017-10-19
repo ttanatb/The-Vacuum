@@ -42,8 +42,9 @@ public class ProjectileScript : MonoBehaviour
     {
         //further coding will happen here with enemies, or we may want to handle that in enemy script
         //For now, we destory the projectile
-        Debug.Log("We Hit something");
-        Destroy(gameObject);
-
+        if (collision.gameObject.tag != "Player") {
+            Debug.Log("We Hit something " + collision.gameObject.tag);
+            Destroy(gameObject);
+        }
     }
 }
