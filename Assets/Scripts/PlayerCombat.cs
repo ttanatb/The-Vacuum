@@ -66,6 +66,15 @@ public class PlayerCombat : MonoBehaviour {
 
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Goal")
+        {
+            Debug.Log("You Win, NERD!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        } 
+    }
+
     /// <summary>
     /// Handles the player taking damage
     /// </summary>
