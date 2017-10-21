@@ -21,25 +21,28 @@ public class WeaponScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //timer is checked to set fire rate
-        //if the timer isn't running it can fire
-        if (fireTimer == 0)
+        // Check to see if the game is paused
+        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
         {
-            if (Input.GetMouseButton(0)&&playerCombat.PEnergy>0)
+            //timer is checked to set fire rate
+            //if the timer isn't running it can fire
+            if (fireTimer == 0)
             {
-                Fire();
+                if (Input.GetMouseButton(0) && playerCombat.PEnergy > 0)
+                {
+                    Fire();
+                }
+                //if the timer is running, update time
             }
-            //if the timer is running, update time
-        }
-        else if (fireTimer > 0)
-        {
-            fireTimer += Time.deltaTime;
-            if (fireTimer >= 1.0f / wFireRate)
+            else if (fireTimer > 0)
             {
-                fireTimer = 0;
+                fireTimer += Time.deltaTime;
+                if (fireTimer >= 1.0f / wFireRate)
+                {
+                    fireTimer = 0;
+                }
             }
         }
-      
 
     }
    /// <summary>

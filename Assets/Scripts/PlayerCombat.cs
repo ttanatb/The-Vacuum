@@ -8,13 +8,15 @@ public class PlayerCombat : MonoBehaviour {
     private uint pScore;
     private float timer;
     private float pInvunerability; //stores how long the player is invunerable after being hit
-    private int pEnergy;
+    private float pEnergy;
     public float pRechargeRate;
     public int pEnergyMax;
     private float rechargeTimer;
-    // Use this for initialization
-    void Start() {
 
+
+    // Use this for initialization
+    void Start()
+    {
 
         pHealth = 3;
 
@@ -29,25 +31,34 @@ public class PlayerCombat : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
-        //just checking time here
-        if (timer >= pInvunerability)
+    void Update()
+    {
+        // Check to see if the game is paused
+        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
         {
-            timer = 0;
-        }
-        else if (timer > 0)
-        {
-            timer += Time.deltaTime;
-        }
-        rechargeTimer += Time.deltaTime;
-        if (rechargeTimer >= 1 / pRechargeRate && pEnergy != pEnergyMax)
-        {
-            pEnergy++;
-            rechargeTimer = 0;
-        }
-        
+            //just checking time here
+            if (timer >= pInvunerability)
+            {
+                timer = 0;
+            }
+            else if (timer > 0)
+            {
+                timer += Time.deltaTime;
+            }
+            rechargeTimer += Time.deltaTime;
 
 
+            // Testing new ways for recharge for the gun
+            pEnergy += .4f * Time.deltaTime;
+            /*
+            if (rechargeTimer >= 1 / pRechargeRate && pEnergy != pEnergyMax)
+            {
+                //pEnergy++;
+                pEnergy ++;
+                rechargeTimer = 0;
+            }
+            */
+        }
     }
 
    /// <summary>
@@ -58,13 +69,12 @@ public class PlayerCombat : MonoBehaviour {
    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-
-
         //picking up item       
         if (collision.gameObject.tag == "Item")
         {
 
         }
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -72,7 +82,8 @@ public class PlayerCombat : MonoBehaviour {
         {
             Debug.Log("You Win, NERD!");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        } 
+        }
+
     }
 
     /// <summary>
@@ -110,7 +121,7 @@ public class PlayerCombat : MonoBehaviour {
     /// <summary>
     /// Returns and modifies the players engery
     /// </summary>
-    public int PEnergy
+    public float PEnergy
     {
        
         get { return pEnergy; }

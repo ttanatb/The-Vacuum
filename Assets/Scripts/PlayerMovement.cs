@@ -41,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
             position = gameObject.transform.position;
-            Cursor.lockState = CursorLockMode.Locked;
 
             cameraObj = GetComponentInChildren<Camera>().gameObject;
             cameraStartingRot = cameraObj.transform.rotation;
@@ -53,8 +52,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerInput();
-        UpdateDirection();
+        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
+        {
+            PlayerInput();
+            UpdateDirection();
+        }
     }
 
     void PlayerInput()

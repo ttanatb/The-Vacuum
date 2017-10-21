@@ -28,7 +28,11 @@ public class GameManagerScript : MonoBehaviour
 
         // Keeps this object from being destroyed between scenes
         DontDestroyOnLoad(gameObject);
-	}
+
+        // Turn off the curser on start
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 	
 	// Update is called once per frame
 	void Update ()

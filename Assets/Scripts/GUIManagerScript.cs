@@ -21,8 +21,8 @@ public class GUIManagerScript : MonoBehaviour
     public Slider healthBar;
 
     // Energy Bar
-    private int maxEnergy;
-    private int currentEnergy;
+    private float maxEnergy;
+    private float currentEnergy;
     public Slider energyBar;
     public GameObject energyFill;
     private bool energyActive;
@@ -34,7 +34,6 @@ public class GUIManagerScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         gameManager = GameObject.Find("GameManager");
         pauseMenu = transform.Find("PauseMenu").gameObject;
-
 
         // Set max health and energy for guns
         maxHealth = player.GetComponent<PlayerCombat>().PHealth;
