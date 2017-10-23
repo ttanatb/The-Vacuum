@@ -104,6 +104,17 @@ public class PlayerCombat : MonoBehaviour {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
+    public void GainEnergy(float energyAmt)
+    {
+        pEnergy += energyAmt;
+        if (pEnergy > pEnergyMax)
+        {
+            pEnergy = pEnergyMax;
+        }
+    }
+
+
     /// <summary>
     /// Returns Player Health
     /// </summary>
