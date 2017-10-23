@@ -54,8 +54,8 @@ public class GUIManagerScript : MonoBehaviour
         energyBar.value = currentEnergy;
 
         // Check for activating the pause menu
-        if(gameManager.GetComponent<GameManagerScript>().GameState == gamestate.paused)
-        {
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.Paused)
+        { 
             pauseMenu.SetActive(true);
         }
         else
