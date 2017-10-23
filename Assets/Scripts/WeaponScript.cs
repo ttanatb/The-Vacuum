@@ -10,6 +10,12 @@ public class WeaponScript : MonoBehaviour
     private float fireTimer;
     private GameObject player;
     private PlayerCombat playerCombat;
+    private Weapons currentWeapon;
+    
+    /// <summary>
+    /// Different kinds of weapons.
+    /// </summary>
+    enum Weapons { AutoProjector, ScatterProjector}
     
     // Use this for initialization
     void Start()
@@ -29,6 +35,7 @@ public class WeaponScript : MonoBehaviour
         //if the timer isn't running it can fire
         if (fireTimer == 0)
         {
+            
             if (Input.GetMouseButton(0) && playerCombat.PEnergy > 0)
             {
                 Fire();
@@ -42,6 +49,10 @@ public class WeaponScript : MonoBehaviour
             {
                 fireTimer = 0;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            currentWeapon = Weapons.AutoProjector;
         }
         
 
