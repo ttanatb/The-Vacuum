@@ -34,10 +34,12 @@ public class PlayerCombat : MonoBehaviour {
     void Update()
     {
         // Check to see if the game is paused
-        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
-        {
-            //just checking time here
-            if (timer >= pInvunerability)
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.Paused)
+            return;
+
+
+        //just checking time here
+        if (timer >= pInvunerability)
             {
                 timer = 0;
             }
@@ -58,7 +60,7 @@ public class PlayerCombat : MonoBehaviour {
                 rechargeTimer = 0;
             }
             */
-        }
+        
     }
 
    /// <summary>

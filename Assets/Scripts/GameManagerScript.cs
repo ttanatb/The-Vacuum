@@ -4,17 +4,17 @@ using UnityEngine;
 
 
 // Enum for different Gamestates (play, pause, lose, win)
-public enum gamestate { play, paused, gameOver, win};
+public enum GameState { Play, Paused, GameOver, Win};
 
-public class GameManagerScript : MonoBehaviour
+public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
 {
     // Attributes
     // Enum that tracks the current gameState
-    private gamestate gameState;
+    private GameState gameState;
 
     // Properties
     // Property for other scripts to access the current game state
-    public gamestate GameState
+    public GameState CurrentGameState
     {
         get { return gameState; }
     }
@@ -24,7 +24,7 @@ public class GameManagerScript : MonoBehaviour
 	void Start ()
     {
         // Start the gamestate in play
-        gameState = gamestate.play;
+        gameState = GameState.Play;
 
         // Keeps this object from being destroyed between scenes
         DontDestroyOnLoad(gameObject);
@@ -49,15 +49,14 @@ public class GameManagerScript : MonoBehaviour
     /// </summary>
     public void PauseHandling()
     {
-
         // If you are playing currently
-        if (gameState == gamestate.play)
+        if (gameState == GameState.Play)
         {
             // Pause the game
             Time.timeScale = 0;
 
             // Change the Game State to paused
-            gameState = gamestate.paused;
+            gameState = GameState.Paused;
 
             // unlock and show curser
             Cursor.visible = true;
@@ -65,13 +64,13 @@ public class GameManagerScript : MonoBehaviour
 
         }
         // If you are paused resume the game
-        else if (gameState == gamestate.paused)
+        else if (gameState == GameState.Paused)
         {
             // Resume the game
             Time.timeScale = 1;
 
             // Change the Game State to paused
-            gameState = gamestate.play;
+            gameState = GameState.Play;
 
             // Lock and hide the curser
             Cursor.visible = false;

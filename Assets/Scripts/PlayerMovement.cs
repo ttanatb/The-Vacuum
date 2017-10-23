@@ -40,23 +40,23 @@ public class PlayerMovement : MonoBehaviour
     //Position
     void Start()
     {
-            position = gameObject.transform.position;
+        position = gameObject.transform.position;
 
-            cameraObj = GetComponentInChildren<Camera>().gameObject;
-            cameraStartingRot = cameraObj.transform.rotation;
-            playerObjStartingRot = transform.rotation;
+        cameraObj = GetComponentInChildren<Camera>().gameObject;
+        cameraStartingRot = cameraObj.transform.rotation;
+        playerObjStartingRot = transform.rotation;
 
-            rigidBody = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
-        {
-            PlayerInput();
-            UpdateDirection();
-        }
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.paused)
+            return;
+
+        PlayerInput();
+        UpdateDirection();
     }
 
     void PlayerInput()

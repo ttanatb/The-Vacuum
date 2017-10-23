@@ -22,27 +22,28 @@ public class WeaponScript : MonoBehaviour
     void Update()
     {
         // Check to see if the game is paused
-        if (GameObject.Find("GameManager").GetComponent<GameManagerScript>().GameState != gamestate.paused)
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.paused)
+            return;
+        
+        //timer is checked to set fire rate
+        //if the timer isn't running it can fire
+        if (fireTimer == 0)
         {
-            //timer is checked to set fire rate
-            //if the timer isn't running it can fire
-            if (fireTimer == 0)
+            if (Input.GetMouseButton(0) && playerCombat.PEnergy > 0)
             {
-                if (Input.GetMouseButton(0) && playerCombat.PEnergy > 0)
-                {
-                    Fire();
-                }
-                //if the timer is running, update time
+                Fire();
             }
-            else if (fireTimer > 0)
+            //if the timer is running, update time
+        }
+        else if (fireTimer > 0)
+        {
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= 1.0f / wFireRate)
             {
-                fireTimer += Time.deltaTime;
-                if (fireTimer >= 1.0f / wFireRate)
-                {
-                    fireTimer = 0;
-                }
+                fireTimer = 0;
             }
         }
+        
 
     }
    /// <summary>
