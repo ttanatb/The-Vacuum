@@ -49,11 +49,26 @@ public class ProjectileScript : MonoBehaviour
         {
             EnemyScript eScript = collision.gameObject.GetComponent<EnemyScript>();
             eScript.TakeDamage(outDamage);
+            
         }
 
+        if (collision.gameObject.tag == "RangedEnemy")
+        {
+            RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
+            eScript.TakeDamage(outDamage);
+
+        }
         if (collision.gameObject.tag != "Player") {
             Debug.Log("We Hit something " + collision.gameObject.tag);
             Destroy(gameObject);
+        }
+
+        if(collision.gameObject.tag != "Player" && gameObject.tag == "Enemy")
+        {
+            PlayerCombat pScript = collision.gameObject.GetComponent<PlayerCombat>();
+            pScript.TakeDamage(outDamage);//have them take damage
+            Destroy(gameObject);
+          
         }
     }
 }

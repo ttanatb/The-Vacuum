@@ -3,49 +3,83 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyScript : MonoBehaviour {
+public class RangedEnemyScript : MonoBehaviour {
+
     public Rigidbody toSeek;
     public GameObject lootDrop;
-    public int inverseDropChance=4;
-    public int outDamage =2;
+    public GameObject projectilePrefab;
+    public int inverseDropChance = 3;
+    public int outDamage = 2;
+    public int outRangedDamage= 1;
     public int Health;
-    public float maxCooldown=3;
-    private float cooldown;
+    public float maxCooldown = 3;
+    public float maxShootCooldown = 5;
+    public bool canShoot;
+    private float shootCooldown;
+    private float cooldown;    
     private bool onCooldown;
+    private bool onShootCooldown;
     public bool isActive = true;
     public Rigidbody myBody;
     public NavMeshAgent myAgent;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         myBody = GetComponent<Rigidbody>();
         myAgent = GetComponent<NavMeshAgent>();
-	}
-	
-	// Update is called once per frame
-	void Update () {     
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         if (isActive && toSeek != null)//if we are alive, and have something to seek
         {
             if (!onCooldown)//and active
             {
+                
                 myAgent.destination = toSeek.transform.position;//move towards stuff
+                NavMeshHit HitHolder;
+                canShoot = !(NavMesh.Raycast(transform.position, myAgent.destination, out HitHolder, NavMesh.AllAreas));
+                if(canShoot && !onShootCooldown)
+                {
+                    Shoot();
+                }
+
             }
             else
             {
-                myAgent.destination = transform.position;//if we are inactive, just move towards yourself. (don't move at all.)
-                cooldown -= Time.deltaTime;//lower your cooldown.
-                if(cooldown <= 0)//if your cooldown is up, say so.
+                myAgent.isStopped = true; ;//if we are inactive, don't move at all
+                cooldown -= Time.deltaTime;//lower your cooldowns
+                shootCooldown -= Time.deltaTime;
+                if (cooldown <= 0)//if your cooldown is up, say so.
                 {
+                    myAgent.isStopped = false;
                     cooldown = 0;//make it precisely 0
                     onCooldown = false; // and turn off the cooldown
+                }
 
+                if (shootCooldown <= 0)//if your cooldown is up, say so.
+                {
+                    shootCooldown = 0;//make it precisely 0
+                    onShootCooldown = false; // and turn off the cooldown
                 }
             }
-           
+
         }
     }
 
-   public void TakeDamage(int incDamage)//damage for object to take in
+    public void Shoot()
+    {
+        GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, myBody.transform);
+        enemyBullet.transform.SetParent(gameObject.transform.parent, true);
+        Debug.Log("pew-pew");
+        onShootCooldown = true;
+        shootCooldown = maxShootCooldown;
+        cooldown = maxCooldown / 2;
+    }
+
+    public void TakeDamage(int incDamage)//damage for object to take in
     {
         if (isActive)//can't kill me if im already dead.
         {
@@ -53,12 +87,12 @@ public class EnemyScript : MonoBehaviour {
             if (Health <= 0)//if i'm dead, do on death code.
             {
                 if (Random.Range(0, inverseDropChance) == 0)// if we generate the right number, drop a healthpack.
-                  {
-                    GameObject DroppedHealthPack = (GameObject)  Instantiate(lootDrop, myBody.transform);
+                {
+                    GameObject DroppedHealthPack = (GameObject)Instantiate(lootDrop, myBody.transform);
                     DroppedHealthPack.transform.SetParent(gameObject.transform.parent, true);
-                 }
+                }
                 isActive = false;
-                
+
                 Destroy(gameObject);
             }
         }
