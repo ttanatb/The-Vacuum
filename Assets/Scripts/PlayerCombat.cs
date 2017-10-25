@@ -105,6 +105,19 @@ public class PlayerCombat : MonoBehaviour {
         }
     }
 
+    public void TakeDamage(int damageAmount, Vector3 damageSrcPos)
+    {
+        Vector3 vec = damageSrcPos - transform.position;
+        float angle = Vector3.Angle(transform.forward, vec);
+        Vector3 cross = Vector3.Cross(transform.forward, vec);
+        if (cross.y < 0)
+            angle = -angle;
+
+        Debug.Log(angle);
+
+        TakeDamage(damageAmount);
+    }
+
     public void GainEnergy(float energyAmt)
     {
         pEnergy += energyAmt;
