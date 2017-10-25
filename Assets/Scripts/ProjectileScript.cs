@@ -52,7 +52,7 @@ public class ProjectileScript : MonoBehaviour
             
         }
 
-        if (collision.gameObject.tag == "RangedEnemy")
+        if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
         {
             RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
             eScript.TakeDamage(outDamage);
@@ -60,10 +60,10 @@ public class ProjectileScript : MonoBehaviour
         }
         if (collision.gameObject.tag != "Player") {
             Debug.Log("We Hit something " + collision.gameObject.tag);
-            Destroy(gameObject);
+            
         }
 
-        if(collision.gameObject.tag != "Player" && gameObject.tag == "Enemy")
+        if(collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
         {
             PlayerCombat pScript = collision.gameObject.GetComponent<PlayerCombat>();
             pScript.TakeDamage(outDamage);//have them take damage

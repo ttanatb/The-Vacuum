@@ -15,13 +15,14 @@ public class RangedEnemyScript : MonoBehaviour {
     public float maxCooldown = 3;
     public float maxShootCooldown = 5;
     public bool canShoot;
-    private float shootCooldown;
-    private float cooldown;    
+    public float shootCooldown;
+    public float cooldown;    
     private bool onCooldown;
     private bool onShootCooldown;
     public bool isActive = true;
     public Rigidbody myBody;
-    public NavMeshAgent myAgent;
+    private NavMeshAgent myAgent;
+    public RaycastHit HitHolder;
     // Use this for initialization
     void Start()
     {
@@ -35,13 +36,16 @@ public class RangedEnemyScript : MonoBehaviour {
 
         if (isActive && toSeek != null)//if we are alive, and have something to seek
         {
+            cooldown -= Time.deltaTime;//lower your cooldowns
+            shootCooldown -= Time.deltaTime;
             if (!onCooldown)//and active
             {
-                
+                myAgent.isStopped = false;
                 myAgent.destination = toSeek.transform.position;//move towards stuff
-                NavMeshHit HitHolder;
-                canShoot = !(NavMesh.Raycast(transform.position, myAgent.destination, out HitHolder, NavMesh.AllAreas));
-                if(canShoot && !onShootCooldown)
+                Vector3 direction = toSeek.transform.position - gameObject.transform.position;
+             
+                Physics.Raycast(gameObject.transform.position, direction, out HitHolder);
+                if (HitHolder.collider.tag == "Player" && !onShootCooldown)
                 {
                     Shoot();
                 }
@@ -50,8 +54,7 @@ public class RangedEnemyScript : MonoBehaviour {
             else
             {
                 myAgent.isStopped = true; ;//if we are inactive, don't move at all
-                cooldown -= Time.deltaTime;//lower your cooldowns
-                shootCooldown -= Time.deltaTime;
+             
                 if (cooldown <= 0)//if your cooldown is up, say so.
                 {
                     myAgent.isStopped = false;
