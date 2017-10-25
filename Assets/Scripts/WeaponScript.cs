@@ -15,13 +15,14 @@ public class WeaponScript : MonoBehaviour
     /// <summary>
     /// Different kinds of weapons.
     /// </summary>
-    enum Weapons { AutoProjector, ScatterProjector}
+    enum Weapons { AutoProjector, MiniProjector, ScatterProjector}
     
     // Use this for initialization
     void Start()
     {
         player = gameObject.transform.parent.gameObject;
         playerCombat = player.GetComponent<PlayerCombat>();
+        Random.InitState((int)Time.time);
     }
 
     // Update is called once per frame
@@ -36,9 +37,13 @@ public class WeaponScript : MonoBehaviour
         if (fireTimer == 0)
         {
             
-            if (Input.GetMouseButton(0) && playerCombat.PEnergy > 0)
+            if (Input.GetMouseButton(0))
             {
-                Fire();
+                //checking ammo based on current weapon.
+                if (currentWeapon == Weapons.MiniProjector && playerCombat.PEnergy >= 1) 
+                    Fire();
+                if (currentWeapon == Weapons.ScatterProjector && playerCombat.PEnergy >= 5)
+                    Fire();
             }
             //if the timer is running, update time
         }
@@ -50,11 +55,18 @@ public class WeaponScript : MonoBehaviour
                 fireTimer = 0;
             }
         }
+        //handling the switching of weapons from one to another
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            currentWeapon = Weapons.AutoProjector;
+            currentWeapon = Weapons.MiniProjector;
+            Debug.Log("Mini Projector Equiped");
         }
-        
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            currentWeapon = Weapons.ScatterProjector;
+            Debug.Log("Scatter Projector Equiped");
+        }
+
 
     }
    /// <summary>
@@ -63,9 +75,24 @@ public class WeaponScript : MonoBehaviour
    /// </summary>
     void Fire()
     {
-        //make a projectile
-        GameObject.Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation);
-        playerCombat.PEnergy--;
+        //make a projectile based on current weapon
+        if (currentWeapon == Weapons.MiniProjector)
+        {
+            GameObject.Instantiate(projectile, Camera.main.transform.position, Camera.main.transform.rotation);
+            playerCombat.PEnergy--;
+        }
+        else if (currentWeapon == Weapons.ScatterProjector)
+        {
+            for (int i =0; i < 5; i++)
+            {
+                Quaternion projectileRotation = Camera.main.transform.rotation;
+                projectileRotation.x += Random.Range(-0.10f, 0.10f);
+                projectileRotation.x += Random.Range(-0.10f, 0.10f);
+
+                GameObject.Instantiate(projectile, Camera.main.transform.position, projectileRotation);
+            }
+            playerCombat.PEnergy-=5;
+        }
         //start the timer
         fireTimer += Time.deltaTime;
     }
