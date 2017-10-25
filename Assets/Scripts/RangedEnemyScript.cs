@@ -3,25 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RangedEnemyScript : MonoBehaviour {
+public class RangedEnemyScript : EnemyScript {
 
-    public Rigidbody toSeek;
-    public GameObject lootDrop;
     public GameObject projectilePrefab;
-    public int inverseDropChance = 3;
-    public int outDamage = 2;
+    public float InaccuracyValue;
     public int outRangedDamage= 1;
-    public int Health;
-    public float maxCooldown = 3;
-    public float maxShootCooldown = 5;
+    public float maxCooldown ;
+    public float maxShootCooldown ;
     public bool canShoot;
     public float shootCooldown;
     public float cooldown;    
     private bool onCooldown;
-    private bool onShootCooldown;
-    public bool isActive = true;
-    public Rigidbody myBody;
-    private NavMeshAgent myAgent;
+    private bool onShootCooldown;    
     public RaycastHit HitHolder;
     // Use this for initialization
     void Start()
@@ -33,11 +26,9 @@ public class RangedEnemyScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
         if (isActive && toSeek != null)//if we are alive, and have something to seek
         {
-            cooldown -= Time.deltaTime;//lower your cooldowns
-            shootCooldown -= Time.deltaTime;
+            Tick();
             if (!onCooldown)//and active
             {
                 myAgent.isStopped = false;
@@ -53,53 +44,60 @@ public class RangedEnemyScript : MonoBehaviour {
             }
             else
             {
-                myAgent.isStopped = true; ;//if we are inactive, don't move at all
-             
-                if (cooldown <= 0)//if your cooldown is up, say so.
-                {
-                    myAgent.isStopped = false;
-                    cooldown = 0;//make it precisely 0
-                    onCooldown = false; // and turn off the cooldown
-                }
-
-                if (shootCooldown <= 0)//if your cooldown is up, say so.
-                {
-                    shootCooldown = 0;//make it precisely 0
-                    onShootCooldown = false; // and turn off the cooldown
-                }
+                myAgent.isStopped = true; ;//if we are inactive, don't move at all             
+               
             }
 
         }
     }
 
+    void Tick()
+    {//handles time incrementing.
+        if (cooldown > 0)
+        {
+            cooldown -= Time.deltaTime;
+        }
+
+        if(shootCooldown > 0)
+        {
+            shootCooldown -= Time.deltaTime;
+        }
+
+        if (onCooldown)
+        {
+            if (cooldown <= 0)
+            {
+                onCooldown = false;
+            }
+        }
+
+        if (onShootCooldown)
+        {
+            if (shootCooldown <= 0)
+            {
+                onShootCooldown = false;
+            }
+        }
+    }
+
     public void Shoot()
     {
-        GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, myBody.transform);
-        enemyBullet.transform.SetParent(gameObject.transform.parent, true);
+        Transform bulletTransform = myBody.transform;
+       
+
+        GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, bulletTransform);
+
+        Vector3 enemyPosition = toSeek.transform.position;
+        enemyPosition.x += Random.Range(-InaccuracyValue,InaccuracyValue)/10;
+        enemyPosition.z += Random.Range(-InaccuracyValue, InaccuracyValue) / 10;
+        enemyBullet.transform.forward = (enemyPosition - enemyBullet.transform.position);//Accuracy
         Debug.Log("pew-pew");
         onShootCooldown = true;
         shootCooldown = maxShootCooldown;
         cooldown = maxCooldown / 2;
     }
 
-    public void TakeDamage(int incDamage)//damage for object to take in
-    {
-        if (isActive)//can't kill me if im already dead.
-        {
-            Health -= incDamage;
-            if (Health <= 0)//if i'm dead, do on death code.
-            {
-                if (Random.Range(0, inverseDropChance) == 0)// if we generate the right number, drop a healthpack.
-                {
-                    GameObject DroppedHealthPack = (GameObject)Instantiate(lootDrop, myBody.transform);
-                    DroppedHealthPack.transform.SetParent(gameObject.transform.parent, true);
-                }
-                isActive = false;
-
-                Destroy(gameObject);
-            }
-        }
-    }
+  
 
     private void OnCollisionEnter(Collision otherObject)
     {//if i hit someone
