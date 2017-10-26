@@ -25,6 +25,8 @@ public class WeaponScript : MonoBehaviour
         player = gameObject.transform.parent.gameObject;
         playerCombat = player.GetComponent<PlayerCombat>();
         Random.InitState((int)Time.time);
+        currentWeapon = Weapons.MiniProjector;
+
     }
 
     // Update is called once per frame
@@ -110,5 +112,8 @@ public class WeaponScript : MonoBehaviour
         //start the timer
         fireTimer += Time.deltaTime;
     }
-
+    PlayerCombat PlayerCombat
+    {
+        get { return playerCombat; }
+    }
 }

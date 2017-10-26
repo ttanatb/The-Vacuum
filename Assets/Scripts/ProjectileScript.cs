@@ -11,6 +11,8 @@ public class ProjectileScript : MonoBehaviour
     private Vector3 position;
     private Vector3 velocity;
     private float timer;
+    private float playerCombat;
+    
 
     void Start()
     {
@@ -23,6 +25,8 @@ public class ProjectileScript : MonoBehaviour
         //projectile moves only forward(gun propulsion) and down(Gravity)
         //velocity = new Vector3(0, -gravityMultiplier, -speed);
         velocity = speed * transform.forward + Vector3.down * gravityMultiplier;
+
+
     }
 
     void Update()
@@ -38,6 +42,7 @@ public class ProjectileScript : MonoBehaviour
         position += velocity * Time.deltaTime;
         timer += Time.deltaTime;
         gameObject.transform.position = position;
+
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -48,6 +53,7 @@ public class ProjectileScript : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             EnemyScript eScript = collision.gameObject.GetComponent<EnemyScript>();
+            
             eScript.TakeDamage(outDamage);
         }
 
