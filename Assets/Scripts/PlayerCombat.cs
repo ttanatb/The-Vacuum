@@ -28,6 +28,7 @@ public class PlayerCombat : MonoBehaviour {
         pEnergy = pEnergyMax;       
         pScore = 0;
         rechargeTimer = 0;
+
     }
 
     // Update is called once per frame
