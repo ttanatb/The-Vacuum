@@ -112,8 +112,5 @@ public class WeaponScript : MonoBehaviour
         //start the timer
         fireTimer += Time.deltaTime;
     }
-    PlayerCombat PlayerCombat
-    {
-        get { return playerCombat; }
-    }
+    
 }

@@ -11,7 +11,7 @@ public class ProjectileScript : MonoBehaviour
     private Vector3 position;
     private Vector3 velocity;
     private float timer;
-    private float playerCombat;
+    
     
 
     void Start()
