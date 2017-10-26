@@ -64,6 +64,8 @@ public class GUIManagerScript : MonoBehaviour
         }
 
         EmptyBarCheck();
+
+        if (Input.GetKeyDown(KeyCode.J)) FlashTakeDamage();
     }
 
     void EmptyBarCheck()
@@ -76,6 +78,11 @@ public class GUIManagerScript : MonoBehaviour
         {
             energyFill.SetActive(true);
         }
+    }
+
+    public void FlashTakeDamage()
+    {
+        GetComponentInChildren<HurtFlash>().FlashRed();
     }
 
 }
