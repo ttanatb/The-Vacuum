@@ -18,7 +18,6 @@ public class PlayerCombat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         pHealth = 3;
 
         //make sure the max energy is set
@@ -53,7 +52,11 @@ public class PlayerCombat : MonoBehaviour
 
 
         // Testing new ways for recharge for the gun
-        pEnergy += .4f * Time.deltaTime;
+        pEnergy += pRechargeRate * Time.deltaTime;
+        if (pEnergy > pEnergyMax)
+        {
+            pEnergy = pEnergyMax;
+        }
         /*
         if (rechargeTimer >= 1 / pRechargeRate && pEnergy != pEnergyMax)
         {

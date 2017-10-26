@@ -11,8 +11,8 @@ public class ProjectileScript : MonoBehaviour
     private Vector3 position;
     private Vector3 velocity;
     private float timer;
-    
-    
+
+
 
     void Start()
     {
@@ -46,35 +46,37 @@ public class ProjectileScript : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-     
+
 
         //further coding will happen here with enemies, or we may want to handle that in enemy script
         //For now, we destory the projectile
         if (collision.gameObject.tag == "Enemy")
         {
             EnemyScript eScript = collision.gameObject.GetComponent<EnemyScript>();
-            
-            eScript.TakeDamage(outDamage);
-            
+            if (eScript)
+            {
+                eScript.TakeDamage(outDamage);
+                Destroy(gameObject);
+            }
         }
 
-        if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
-        {
-            RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
-            eScript.TakeDamage(outDamage);
+        //if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
+        //{
+        //    RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
+        //    eScript.TakeDamage(outDamage);
+        //}
 
-        }
-        if (collision.gameObject.tag != "Player") {
-            Debug.Log("We Hit something " + collision.gameObject.tag);
-            
-        }
-
-        if(collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
+        else if (collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
         {
             PlayerCombat pScript = collision.gameObject.GetComponent<PlayerCombat>();
             pScript.TakeDamage(outDamage);//have them take damage
             Destroy(gameObject);
-          
+
         }
+        else if (collision.gameObject.tag == "Room")
+        {
+            Destroy(gameObject);
+        }
+
     }
 }

@@ -11,6 +11,19 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
     private MapNode[] nodes;    //array of all the nodes
     private MapNode currNode;   //node in which the player is in
 
+    public Room goalRoom;
+    private MapNode goalNode = null;
+
+    private MapNode spawnNode = null;
+
+    public GameObject meleeEnemyPrefab;
+    public GameObject rangedEnemyPrefab;
+
+    private float timer = 0f;
+    public float timeToSpawn = 5f;
+    public float timerReductionRate = 0.99f;
+    public float timeBetweenUpdates = 0.5f;
+    
     // Use this for initialization
     void Start()
     {
@@ -18,11 +31,23 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
         Object[] objs = FindObjectsOfType<Room>();
 
         //populate the array of nodes
+        List<MapNode> bigRooms = new List<MapNode>();
         nodes = new MapNode[objs.Length];
         for (int i = 0; i < objs.Length; i++)
         {
             nodes[i] = new MapNode(objs[i] as Room);
+            if (goalNode == null)
+            {
+                if (nodes[i].Data == goalRoom)
+                {
+                    goalNode = nodes[i];
+                }
+            }
+
+            if (nodes[i].IsBigRoom)
+                bigRooms.Add(nodes[i]);
         }
+        Debug.Log(bigRooms.Count);
 
         #region debug
         /*
@@ -57,7 +82,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
             //loop through all the surrounding positions
             for (int k = 0; k < surroundingPos.Length; k++)
             {
-                
+
                 //loop through all the other nodes
                 for (int j = 0; j < nodes.Length; j++)
                 {
@@ -83,16 +108,40 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
                         count++;
                     }
                 }
+
             }
 
             //Logs with error if a node is not connected properly
             if (count != neighbors.Length)
             {
-                Debug.LogError(nodes[i].Data.name + " did not connect properly");
+                surroundingPos = nodes[i].Data.GetConnectingPosDouble();
+                for (int k = 0; k < surroundingPos.Length; k++)
+                {
+                    //loop through all the other nodes
+                    for (int j = 0; j < bigRooms.Count; j++)
+                    {
+                        //sets the y pos to be the same
+                        surroundingPos[k].y = bigRooms[j].Data.transform.position.y;
+                        Debug.DrawLine(surroundingPos[k], bigRooms[j].Data.transform.position);
+
+                        //if the position is basically the same, add to the array
+                        if ((surroundingPos[k] - bigRooms[j].Data.transform.position).sqrMagnitude < 1f)
+                        {
+                            neighbors[count] = bigRooms[j];
+                            count++;
+                        }
+                    }
+                }
+                if (count != neighbors.Length && !nodes[i].Data.name.Contains("Room_Cross"))
+                    Debug.LogError(nodes[i].Data.name + " did not connect properly");
+
             }
 
             nodes[i].Neighbors = neighbors;
         }
+
+        IEnumerator coroutine = UpdateSpawnLoc(timeBetweenUpdates);
+        StartCoroutine(coroutine);
     }
 
     /// <summary>
@@ -105,10 +154,132 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
         currNode.Visited = true;
     }
 
-    //TO-DO:    write a public function to return the closest, unvisited room to spawn enemies in
-    //          extend to return the closest, unvisited room that is out of the player's line of sight
+    private MapNode BreadthFirstSearch()
+    {
+        Queue<MapNode> queueStart = new Queue<MapNode>();
+        Queue<MapNode> queueEnd = new Queue<MapNode>();
+        List<MapNode> startVisited = new List<MapNode>();
+        List<MapNode> endVisited = new List<MapNode>();
 
-    //TO-DO: Delete this later (or comment out or something)
+        queueStart.Enqueue(goalNode);
+        queueEnd.Enqueue(currNode);
+
+        List<MapNode> meeting = new List<MapNode>();
+
+        while (queueStart.Count > 0 || queueEnd.Count > 0)
+        {
+            MapNode nodeF = null;
+            MapNode nodeB = null;
+            if (queueStart.Count > 0)
+            {
+
+                nodeF = queueStart.Dequeue();
+                startVisited.Add(nodeF);
+                if (nodeF == currNode)
+                    nodeF = null;
+            }
+
+            if (queueEnd.Count > 0)
+            {
+                nodeB = queueEnd.Dequeue();
+                endVisited.Add(nodeB);
+
+                if (startVisited.Contains(nodeB))
+                {
+                    meeting.Add(nodeB);
+                    nodeB = null;
+                }
+            }
+
+            if (nodeF != null && nodeF.Neighbors != null)
+            {
+                foreach (MapNode child in nodeF.Neighbors)
+                {
+                    if (child != null)
+                    {
+                        if (startVisited.Contains(child) || endVisited.Contains(child))
+                            continue;
+                        else
+                        {
+                            queueStart.Enqueue(child);
+                        }
+
+                    }
+                }
+            }
+
+            if (nodeB != null && nodeB.Neighbors != null)
+            {
+                foreach (MapNode child in nodeB.Neighbors)
+                {
+                    if (child != null)
+                    {
+                        if (endVisited.Contains(child))
+                            continue;
+                        else
+                        {
+                            queueEnd.Enqueue(child);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        float maxDist = float.MaxValue;
+        MapNode nearest = null;
+        foreach (MapNode n in meeting)
+        {
+            float dist = (n.Data.transform.position - goalNode.Data.transform.position).sqrMagnitude;
+            if (dist < maxDist)
+            {
+                maxDist = dist;
+                nearest = n;
+            }
+        }
+
+        return nearest;
+    }
+
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+
+
+        if (timer > timeToSpawn)
+        {
+            SpawnEnemy();
+            timer = 0f;
+            timeToSpawn *= timerReductionRate;
+        }
+    }
+
+    void SpawnEnemy()
+    {
+        GameObject obj = null;
+        if (Random.value < 0.5f)
+        {
+            obj = Instantiate(meleeEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
+        }
+        else
+        {
+            obj = Instantiate(rangedEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
+        }
+
+        obj.GetComponent<EnemyScript>().toSeek = player.GetComponent<Rigidbody>();
+    }
+
+    IEnumerator UpdateSpawnLoc(float timeToWait)
+    {
+        for(;;)
+        {
+            spawnNode = BreadthFirstSearch();
+            yield return new WaitForSeconds(timeToWait);
+        }
+    }
+
+
     private void OnDrawGizmos()
     {
         if (nodes == null) return;
@@ -140,6 +311,12 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
                 if (n != null)
                     Gizmos.DrawCube(n.Data.transform.position, scale);
             }
+        }
+
+        if (spawnNode != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawCube(spawnNode.Data.transform.position, Vector3.one * 0.3f);
         }
     }
 }
