@@ -26,6 +26,10 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
     public GameObject energyFill;
     private bool energyActive;
 
+
+    //HurtFlash
+    private HurtFlash hurtFlash;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -39,6 +43,8 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
         maxEnergy = player.GetComponent<PlayerCombat>().PEnergy;
         healthBar.maxValue = maxHealth;
         energyBar.maxValue = maxEnergy;
+
+        hurtFlash = GetComponentInChildren<HurtFlash>();
     }
 	
 	// Update is called once per frame
@@ -80,9 +86,8 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
 
     public void FlashTakeDamage(float degree)
     {
-        HurtFlash f = GetComponentInChildren<HurtFlash>();
-        f.FlashRed();
-        f.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, degree);
+        hurtFlash.FlashRed();
+        hurtFlash.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, degree);
     }
 
 }
