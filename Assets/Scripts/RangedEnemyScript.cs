@@ -94,7 +94,7 @@ public class RangedEnemyScript : EnemyScript {
         enemyPosition.z += Random.Range(-InaccuracyValue, InaccuracyValue) / 10;
         enemyBullet.transform.forward = (enemyPosition - enemyBullet.transform.position);//Accuracy
 
-        Debug.Log("pew-pew");
+        //Debug.Log("pew-pew");
         onShootCooldown = true;
         shootCooldown = maxShootCooldown;
         cooldown = maxCooldown / 2;

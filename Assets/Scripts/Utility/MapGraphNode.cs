@@ -30,6 +30,16 @@ public class MapNode
         set { visisted = value; }
     }
 
+    public bool IsBigRoom
+    {
+        get; set;
+    }
+
+    public Vector3 SpawnLoc
+    {
+        get { return data.transform.position; }
+    }
+
     /// <summary>
     /// Constructor to build a mapnode based off of the data
     /// </summary>

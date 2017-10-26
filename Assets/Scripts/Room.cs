@@ -9,7 +9,9 @@ public class Room : MonoBehaviour
     {
         Straight,
         Turn,
-        T
+        T,
+        Cross,
+        BigRoom
     }
 
     private RoomType type;
@@ -18,7 +20,15 @@ public class Room : MonoBehaviour
     //Set up the room type correctly
     public void Awake()
     {
-        if (gameObject.name.Contains("Straight"))
+        if (gameObject.name.Contains("Room"))
+        {
+            type = RoomType.BigRoom;
+        }
+        else if (gameObject.name.Contains("Cross"))
+        {
+            type = RoomType.Cross;
+        }
+        else if (gameObject.name.Contains("Straight"))
         {
             type = RoomType.Straight;
         }
@@ -39,8 +49,8 @@ public class Room : MonoBehaviour
         switch (type)
         {
             case RoomType.Straight:
-                //Debug.DrawLine(transform.position, transform.position + transform.up, Color.green);
-                //Debug.DrawLine(transform.position, transform.position - transform.up, Color.green);
+                Debug.DrawLine(transform.position, transform.position + transform.up * 4, Color.green);
+                Debug.DrawLine(transform.position, transform.position - transform.up * 4, Color.green);
                 break;
             case RoomType.Turn:
                 Debug.DrawLine(transform.position, transform.position + transform.right, Color.red);
@@ -65,6 +75,10 @@ public class Room : MonoBehaviour
     public void SetAssociatedNode(MapNode n)
     {
         node = n;
+        if (type == RoomType.BigRoom)
+        {
+            node.IsBigRoom = true;
+        }
     }
 
     /// <summary>
@@ -92,6 +106,56 @@ public class Room : MonoBehaviour
                 positions[1] = transform.position - transform.up * 2f;
                 positions[2] = transform.position + transform.up * 2f;
                 break;
+            case RoomType.Cross:
+                positions = new Vector3[4];
+                positions[0] = transform.position - transform.right * 2f;
+                positions[1] = transform.position - transform.up * 2f;
+                positions[2] = transform.position + transform.up * 2f;
+                positions[3] = transform.position + transform.right * 2f;
+                break;
+            case RoomType.BigRoom:
+                positions = new Vector3[4];
+                positions[0] = transform.position - transform.right * 4f;
+                positions[1] = transform.position - transform.up * 4f;
+                positions[2] = transform.position + transform.up * 4f;
+                positions[3] = transform.position + transform.right * 4f;
+                break;
+        }
+
+        return positions;
+    }
+
+    public Vector3[] GetConnectingPosDouble()
+    {
+        Vector3[] positions = null;
+        switch (type)
+        {
+            case RoomType.Straight:
+                positions = new Vector3[2];
+                positions[0] = transform.position + transform.up * 4f;
+                positions[1] = transform.position - transform.up * 4f;
+                break;
+            case RoomType.Turn:
+                positions = new Vector3[2];
+                positions[0] = transform.position + transform.right * 4f;
+                positions[1] = transform.position - transform.up * 4f;
+                break;
+            case RoomType.T:
+                positions = new Vector3[3];
+                positions[0] = transform.position - transform.right * 4f;
+                positions[1] = transform.position - transform.up * 4f;
+                positions[2] = transform.position + transform.up * 4f;
+                break;
+            case RoomType.Cross:
+                positions = new Vector3[4];
+                positions[0] = transform.position - transform.right * 4f;
+                positions[1] = transform.position - transform.up * 4f;
+                positions[2] = transform.position + transform.up * 4f;
+                positions[3] = transform.position + transform.right * 4f;
+                break;
+            case RoomType.BigRoom:
+                positions = new Vector3[0];
+                break;
         }
 
         return positions;
@@ -104,6 +168,10 @@ public class Room : MonoBehaviour
         if (other.tag == "Player")
         {
             MapGraph.Instance.SetCurrentNode(node);
+        }
+        else if (other.tag == "PlayerSight")
+        {
+            node.Visited = true;
         }
     }
 }
