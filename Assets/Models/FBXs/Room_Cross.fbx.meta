@@ -19,6 +19,7 @@ ModelImporter:
     3300004: Cube.004
     4300000: Cube.004
     4300002: Cube.001
+    4300004: Room_Cross
   materials:
     importMaterials: 1
     materialName: 0

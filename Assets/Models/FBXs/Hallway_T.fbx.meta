@@ -19,6 +19,7 @@ ModelImporter:
     3300004: //RootNode
     4300000: Cube.004
     4300002: Turn
+    4300004: Hallway_T
   materials:
     importMaterials: 1
     materialName: 0
