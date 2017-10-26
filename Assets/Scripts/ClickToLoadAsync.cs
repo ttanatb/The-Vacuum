@@ -29,14 +29,63 @@ public class ClickToLoadAsync : MonoBehaviour {
     /// Method that loads in a level given a level
     /// </summary>
     /// <param name="level"></param>
-    public void ClickAsync(int level)
+    public void PlayGame(int level)
     {
         // Load current level in the gameManager
         Application.LoadLevel(level);
 
-        //loadingImage.SetActive(true);
-        //StartCoroutine(LoadLevelWithBar(level));
+        GameManagerScript.Instance.CurrentGameState = GameState.Play;
+        // Resume the game
+        Time.timeScale = 1;
+
+        // Lock and hide the curser
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
+
+    /// <summary>
+    /// Method that exits a level given the scene number
+    /// </summary>
+    /// <param name="level"></param>
+    public void ExitGame(int level)
+    {
+        // Load current level in the gameManager
+        Application.LoadLevel(level);
+
+        GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+    }
+
+    /// <summary>
+    /// Method that loads in a level given a level
+    /// </summary>
+    /// <param name="level"></param>
+    public void LoadScene(int level)
+    {
+        // Load current level in the gameManager
+        Application.LoadLevel(level);
+    }
+
+    /// <summary>
+    /// Method that hides/setsUnActive a GameObject/Image
+    /// </summary>
+    /// <param name="level"></param>
+    public void HideGameObject(GameObject unhiddenGameObject)
+    {
+        // Load current level in the gameManager
+        unhiddenGameObject.SetActive(false);
+    }
+
+
+    /// <summary>
+    /// Method that unhides/setsActive a GameObject/Image
+    /// </summary>
+    /// <param name="level"></param>
+    public void UnHideGameObject(GameObject hiddenGameObject)
+    {
+        // Load current level in the gameManager
+        hiddenGameObject.SetActive(true);
+    }
+
 
 
     /// <summary>

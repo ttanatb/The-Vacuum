@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Enum for different Gamestates (play, pause, lose, win)
-public enum GameState { Play, Paused, GameOver, Win};
+// Enum for different Gamestates (play, pause, lose, win, menu)
+public enum GameState { Play, Paused, GameOver, Win, Menu};
 
 public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
 {
@@ -17,6 +17,7 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
     public GameState CurrentGameState
     {
         get { return gameState; }
+        set { gameState = value; }
     }
 
 
@@ -37,6 +38,8 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
 	// Update is called once per frame
 	void Update ()
     {
+        //Debug.Log(gameState);
+
         // Call the pause handling helper method
         if (Input.GetKeyDown(KeyCode.Escape))
         {
