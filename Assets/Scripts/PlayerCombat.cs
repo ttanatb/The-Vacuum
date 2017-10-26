@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public Transform enemyPosToCheck;
     private int pHealth;
     private uint pScore;
     private float timer;
@@ -36,12 +35,6 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-            TakeDamage(0, enemyPosToCheck.position);
-
-        Debug.DrawLine(enemyPosToCheck.position, transform.position);
-        Debug.DrawLine(transform.position + transform.forward, transform.position);
-
         // Check to see if the game is paused
         if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.Paused)
             return;
