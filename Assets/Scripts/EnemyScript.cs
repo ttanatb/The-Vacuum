@@ -46,4 +46,8 @@ public class EnemyScript : MonoBehaviour {
 
     }
 
+    private void OnDestroy()
+    {
+        ScoreManager.Instance.IncrementScore(5);
+    }
 }
