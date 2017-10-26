@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIManagerScript : MonoBehaviour
+public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
 {
     // Attributes
     // Reference to the player and GameManager
@@ -12,7 +12,6 @@ public class GUIManagerScript : MonoBehaviour
 
     // Menu references
     private GameObject pauseMenu;
-
 
     // GUI Bars
     // Health Bar
@@ -27,6 +26,10 @@ public class GUIManagerScript : MonoBehaviour
     public GameObject energyFill;
     private bool energyActive;
 
+
+    //HurtFlash
+    private HurtFlash hurtFlash;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -40,6 +43,8 @@ public class GUIManagerScript : MonoBehaviour
         maxEnergy = player.GetComponent<PlayerCombat>().PEnergy;
         healthBar.maxValue = maxHealth;
         energyBar.maxValue = maxEnergy;
+
+        hurtFlash = GetComponentInChildren<HurtFlash>();
     }
 	
 	// Update is called once per frame
@@ -64,6 +69,7 @@ public class GUIManagerScript : MonoBehaviour
         }
 
         EmptyBarCheck();
+
     }
 
     void EmptyBarCheck()
@@ -76,6 +82,12 @@ public class GUIManagerScript : MonoBehaviour
         {
             energyFill.SetActive(true);
         }
+    }
+
+    public void FlashTakeDamage(float degree)
+    {
+        hurtFlash.FlashRed();
+        hurtFlash.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, degree);
     }
 
 }

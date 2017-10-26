@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: e2a8f69a126b0a448a24df6e7fcae499
-timeCreated: 1508163773
-licenseType: Free
+guid: 503b3355df61baf4ba9467562defc8c4
+timeCreated: 1508943375
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Turn
+    4300000: Cube.004
   materials:
     importMaterials: 1
     materialName: 0
