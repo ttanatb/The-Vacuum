@@ -82,15 +82,18 @@ public class RangedEnemyScript : EnemyScript {
 
     public void Shoot()
     {
-        Transform bulletTransform = myBody.transform;
+        //Transform bulletTransform = myBody.transform;
        
 
-        GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, bulletTransform);
+        GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, myBody.transform.position, Quaternion.identity);
+        Physics.IgnoreCollision(enemyBullet.GetComponent<Collider>(), GetComponent<Collider>());
+
 
         Vector3 enemyPosition = toSeek.transform.position;
         enemyPosition.x += Random.Range(-InaccuracyValue,InaccuracyValue)/10;
         enemyPosition.z += Random.Range(-InaccuracyValue, InaccuracyValue) / 10;
         enemyBullet.transform.forward = (enemyPosition - enemyBullet.transform.position);//Accuracy
+
         Debug.Log("pew-pew");
         onShootCooldown = true;
         shootCooldown = maxShootCooldown;
