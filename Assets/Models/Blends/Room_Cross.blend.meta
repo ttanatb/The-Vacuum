@@ -4,7 +4,23 @@ timeCreated: 1508943376
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: Cube_001
+    100002: Cube_004
+    100004: //RootNode
+    400000: Cube_001
+    400002: Cube_004
+    400004: //RootNode
+    2300000: Cube_001
+    2300002: Cube_004
+    2300004: //RootNode
+    3300000: Cube_001
+    3300002: Cube_004
+    3300004: //RootNode
+    4300000: Cube_004
+    4300002: Cube_001
+    7400000: Default Take
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
