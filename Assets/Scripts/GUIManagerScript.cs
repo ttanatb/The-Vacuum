@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIManagerScript : MonoBehaviour
+public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
 {
     // Attributes
     // Reference to the player and GameManager
@@ -12,7 +12,6 @@ public class GUIManagerScript : MonoBehaviour
 
     // Menu references
     private GameObject pauseMenu;
-
 
     // GUI Bars
     // Health Bar
@@ -64,6 +63,7 @@ public class GUIManagerScript : MonoBehaviour
         }
 
         EmptyBarCheck();
+
     }
 
     void EmptyBarCheck()
@@ -76,6 +76,13 @@ public class GUIManagerScript : MonoBehaviour
         {
             energyFill.SetActive(true);
         }
+    }
+
+    public void FlashTakeDamage(float degree)
+    {
+        HurtFlash f = GetComponentInChildren<HurtFlash>();
+        f.FlashRed();
+        f.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, degree);
     }
 
 }
