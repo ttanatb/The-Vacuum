@@ -59,11 +59,11 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
         energyBar.value = currentEnergy;
 
         // Check for activating the pause menu
-        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.Paused)
+        if (GameManagerScript.Instance && (GameManagerScript.Instance.CurrentGameState == GameState.Paused))
         { 
             pauseMenu.SetActive(true);
         }
-        else
+        else if (GameManagerScript.Instance && (GameManagerScript.Instance.CurrentGameState == GameState.Play))
         {
             pauseMenu.SetActive(false);
         }

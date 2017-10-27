@@ -38,7 +38,7 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
 	// Update is called once per frame
 	void Update ()
     {
-        //Debug.Log(gameState);
+        Debug.Log(gameState);
 
         // Call the pause handling helper method
         if (Input.GetKeyDown(KeyCode.Escape))

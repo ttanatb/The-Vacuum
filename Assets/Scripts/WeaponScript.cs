@@ -33,7 +33,7 @@ public class WeaponScript : MonoBehaviour
     void Update()
     {
         // Check to see if the game is paused
-        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState == GameState.Paused)
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState != GameState.Play)
             return;
         
         //timer is checked to set fire rate
