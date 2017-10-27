@@ -47,7 +47,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
             if (nodes[i].IsBigRoom)
                 bigRooms.Add(nodes[i]);
         }
-        Debug.Log(bigRooms.Count);
+        //Debug.Log(bigRooms.Count);
 
         #region debug
         /*

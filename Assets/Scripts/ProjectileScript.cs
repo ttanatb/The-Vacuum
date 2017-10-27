@@ -69,7 +69,7 @@ public class ProjectileScript : MonoBehaviour
         else if (collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
         {
             PlayerCombat pScript = collision.gameObject.GetComponent<PlayerCombat>();
-            pScript.TakeDamage(outDamage);//have them take damage
+            pScript.TakeDamage(outDamage, collision.transform.position);//have them take damage
             Destroy(gameObject);
 
         }
