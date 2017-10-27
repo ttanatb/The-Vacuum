@@ -23,7 +23,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBe
 
 		else
 		{
-			Debug.LogError("Singleton already created");
+			Debug.LogError("Singleton of type " + instance.name + " already created");
 		}
 	}
 

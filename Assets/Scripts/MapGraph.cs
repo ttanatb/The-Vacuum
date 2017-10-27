@@ -283,6 +283,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
     }
 
 
+    /*
     private void OnDrawGizmos()
     {
         if (nodes == null) return;
@@ -322,5 +323,6 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
             Gizmos.DrawCube(spawnNode.Data.transform.position, Vector3.one * 0.3f);
         }
     }
+    */
 }
 

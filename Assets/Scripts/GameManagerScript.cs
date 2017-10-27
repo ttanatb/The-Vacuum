@@ -28,7 +28,7 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
         gameState = GameState.Play;
 
         // Keeps this object from being destroyed between scenes
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         // Turn off the curser on start
         Cursor.visible = false;
