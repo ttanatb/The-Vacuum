@@ -97,12 +97,12 @@ public class WeaponScript : MonoBehaviour
             for (int i =0; i < 5; i++)
             {
                 Quaternion projectileRotation = Camera.main.transform.rotation;
-                projectileRotation.x += Random.Range(-0.50f, 0.50f);
-                projectileRotation.y += Random.Range(-0.50f, 0.50f);
+                projectileRotation.x += Random.Range(-0.25f, 0.25f);
+                projectileRotation.y += Random.Range(-0.25f, 0.25f);
 
                 GameObject.Instantiate(projectileScatter, Camera.main.transform.position, projectileRotation);
             }
-            playerCombat.PEnergy-=5;
+            playerCombat.PEnergy-=3;
         }
         else if(currentWeapon == Weapons.AutoProjector){
             GameObject.Instantiate(projectileAuto, Camera.main.transform.position, Camera.main.transform.rotation);
