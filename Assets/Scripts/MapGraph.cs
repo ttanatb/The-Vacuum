@@ -23,7 +23,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
     public float timeToSpawn = 5f;
     public float timerReductionRate = 0.99f;
     public float timeBetweenUpdates = 0.5f;
-    
+
     // Use this for initialization
     void Start()
     {
@@ -47,7 +47,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
             if (nodes[i].IsBigRoom)
                 bigRooms.Add(nodes[i]);
         }
-        Debug.Log(bigRooms.Count);
+        //Debug.Log(bigRooms.Count);
 
         #region debug
         /*
@@ -257,22 +257,25 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
 
     void SpawnEnemy()
     {
-        GameObject obj = null;
-        if (Random.value < 0.5f)
+        if (meleeEnemyPrefab && rangedEnemyPrefab && spawnNode != null)
         {
-            obj = Instantiate(meleeEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
-        }
-        else
-        {
-            obj = Instantiate(rangedEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
-        }
+            GameObject obj = null;
+            if (Random.value < 0.5f)
+            {
+                obj = Instantiate(meleeEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
+            }
+            else
+            {
+                obj = Instantiate(rangedEnemyPrefab, spawnNode.SpawnLoc, Quaternion.identity);
+            }
 
-        obj.GetComponent<EnemyScript>().toSeek = player.GetComponent<Rigidbody>();
+            obj.GetComponent<EnemyScript>().toSeek = player.GetComponent<Rigidbody>();
+        }
     }
 
     IEnumerator UpdateSpawnLoc(float timeToWait)
     {
-        for(;;)
+        for (;;)
         {
             spawnNode = BreadthFirstSearch();
             yield return new WaitForSeconds(timeToWait);
@@ -280,6 +283,7 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
     }
 
 
+    /*
     private void OnDrawGizmos()
     {
         if (nodes == null) return;
@@ -319,5 +323,6 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
             Gizmos.DrawCube(spawnNode.Data.transform.position, Vector3.one * 0.3f);
         }
     }
+    */
 }
 

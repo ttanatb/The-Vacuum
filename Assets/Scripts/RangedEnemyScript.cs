@@ -109,7 +109,7 @@ public class RangedEnemyScript : EnemyScript {
             if (otherObject.gameObject.tag == "Player")//if it is a player
             {
                 PlayerCombat otherScript = otherObject.gameObject.GetComponent<PlayerCombat>();
-                otherScript.TakeDamage(outDamage);//have them take damage
+                otherScript.TakeDamage(outDamage, transform.position);//have them take damage
                 cooldown = maxCooldown;//and go on cooldown
                 onCooldown = true;
                 //Add a bone-crunch sound, if we can.
