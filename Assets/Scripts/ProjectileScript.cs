@@ -60,11 +60,11 @@ public class ProjectileScript : MonoBehaviour
             }
         }
 
-        //if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
-        //{
-        //    RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
-        //    eScript.TakeDamage(outDamage);
-        //}
+        if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
+        {
+           RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
+           eScript.TakeDamage(outDamage);
+        }
 
         else if (collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
         {
