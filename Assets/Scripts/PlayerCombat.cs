@@ -94,7 +94,16 @@ public class PlayerCombat : MonoBehaviour
         if (other.gameObject.tag == "Goal")
         {
             Debug.Log("You Win, NERD!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            // Scene 2 is the win screen
+            SceneManager.LoadScene(2);
+
+            // Change the Game State to Menu
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+
+            // unlock and show curser
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
     }
@@ -113,7 +122,16 @@ public class PlayerCombat : MonoBehaviour
         if (pHealth <= 0)
         {
             Debug.Log("You lose, NERD!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            // Scene 1 is the death screen
+            SceneManager.LoadScene(1);
+
+            // Change the Game State to Menu
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+
+            // unlock and show curser
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
