@@ -54,12 +54,19 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState != GameState.Play)
             return;
 
         PlayerInput();
+    }
+
+    private void Update()
+    {
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState != GameState.Play)
+            return;
+
         UpdateDirection();
     }
 
