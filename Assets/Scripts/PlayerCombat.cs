@@ -75,7 +75,11 @@ public class PlayerCombat : MonoBehaviour
         if (collision.gameObject.tag == "HealthPickUp")
         {
             pHealth += 3;
-            pHealth = pHealthMax;
+            //incase we exceed the max
+            if (PHealth > pHealthMax)
+            {
+                pHealth = pHealthMax;
+            }
             Destroy(collision.gameObject);
             Debug.Log("Health Pick up");
         }
