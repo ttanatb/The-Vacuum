@@ -40,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rigidBody;
 
+    private AudioSource walkingAudio;
+    public AudioClip walkingAudioClip;
+
     //Position
     void Start()
     {
@@ -51,6 +54,12 @@ public class PlayerMovement : MonoBehaviour
 
         rigidBody = GetComponent<Rigidbody>();
         combat = GetComponent<PlayerCombat>();
+
+        walkingAudio = gameObject.AddComponent<AudioSource>();
+        walkingAudio.loop = true;
+        walkingAudio.playOnAwake = false;
+        walkingAudio.clip = walkingAudioClip;
+        //walkingAudio.Play();
     }
 
     // Update is called once per frame
@@ -72,8 +81,19 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerInput()
     {
-        Vector3 movement = (transform.forward * Input.GetAxis("Vertical") +
-            transform.right * Input.GetAxis("Horizontal")) * speed * Time.deltaTime;
+        Vector3 input = (transform.forward * Input.GetAxis("Vertical") +
+            transform.right * Input.GetAxis("Horizontal"));
+
+        if (input.sqrMagnitude > 0.5f && !walkingAudio.isPlaying)
+        {
+            walkingAudio.Play();
+        }
+        else if (walkingAudio.isPlaying && input.sqrMagnitude < 0.5f)
+        {
+            walkingAudio.Stop();
+        }
+
+        Vector3 movement = input * speed * Time.deltaTime;
 
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) &&
             combat.PEnergy > sprintDrainRate * Time.deltaTime)
@@ -81,7 +101,16 @@ public class PlayerMovement : MonoBehaviour
             combat.PEnergy -= sprintDrainRate * Time.deltaTime;
 
             if (combat.PEnergy > sprintDrainRate * Time.deltaTime * 2)
+            {
+                walkingAudio.pitch = 1.5f;
                 movement *= sprintFactor;
+            } else
+            {
+                walkingAudio.pitch = 1f;
+            }
+        } else
+        {
+            walkingAudio.pitch = 1f;
         }
 
         rigidBody.MovePosition(movement + transform.position);
