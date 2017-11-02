@@ -61,12 +61,4 @@ public class EnemyScript : MonoBehaviour {
         audio.clip = die;
         audio.Play();
     }
-
-
-
-    private void OnDestroy()
-    {
-        if (ScoreManager.Instance)
-            ScoreManager.Instance.IncrementScore(5);
-    }
 }

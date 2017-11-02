@@ -70,4 +70,12 @@ public class MeleeEnemyScript : EnemyScript {
         }
 
     }
+
+    private void OnDestroy()
+    {
+        if (ScoreManager.Instance)
+            ScoreManager.Instance.IncrementScore(10);
+    }
+
+
 }

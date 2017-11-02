@@ -19,7 +19,7 @@ public class ClickToLoadAsync : MonoBehaviour {
 
         if(scoreText)
         {
-            scoreText.text = GameObject.Find("ScoreManagerObject").GetComponent<ScoreManager>().Score.ToString();
+            scoreText.text = ScoreManager.Instance.GetComponent<ScoreManager>().Score.ToString();
         }
 
     }
@@ -68,7 +68,7 @@ public class ClickToLoadAsync : MonoBehaviour {
 
 
         // Check to see if an existing ScoreManager exists
-        if (GameObject.Find("ScoreManagerObject"))
+        if (ScoreManager.Instance)
         {
             Destroy(GameObject.Find("ScoreManagerObject"));
         }
