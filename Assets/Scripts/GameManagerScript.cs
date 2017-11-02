@@ -12,6 +12,8 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
     // Enum that tracks the current gameState
     private GameState gameState;
 
+    private AudioListener listener;
+
     // Properties
     // Property for other scripts to access the current game state
     public GameState CurrentGameState
@@ -47,6 +49,18 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
         }
 	}
 
+    void ToggleAudioListener()
+    {
+        if (!listener)
+        {
+            listener = FindObjectOfType<AudioListener>();
+        }
+
+        if (gameState == GameState.Paused)
+            listener.enabled = false;
+        else listener.enabled = true;
+    }
+
     /// <summary>
     /// Helper method to help pause the game
     /// </summary>
@@ -79,7 +93,8 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        
+        ToggleAudioListener();
+
     }
 
 }
