@@ -7,7 +7,10 @@ public class PlayerMovement : MonoBehaviour
 {
     //editable speed vector
     public float speed = 1.0f;
-    public float maxSpeed = 2f;
+    public float sprintFactor = 2f;
+    public float sprintDrainRate = 1f;
+
+    private PlayerCombat combat;
 
     public Vector3 position;
 
@@ -47,26 +50,41 @@ public class PlayerMovement : MonoBehaviour
         playerObjStartingRot = transform.rotation;
 
         rigidBody = GetComponent<Rigidbody>();
+        combat = GetComponent<PlayerCombat>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState != GameState.Play)
             return;
 
         PlayerInput();
+    }
+
+    private void Update()
+    {
+        if (GameManagerScript.Instance && GameManagerScript.Instance.CurrentGameState != GameState.Play)
+            return;
+
         UpdateDirection();
     }
 
     void PlayerInput()
     {
-        Vector3 vel = rigidBody.velocity;
-        vel += transform.forward * Input.GetAxis("Vertical") * speed;
-        vel += transform.right * Input.GetAxis("Horizontal") * speed;
-        vel = Vector3.ClampMagnitude(vel, maxSpeed);
+        Vector3 movement = (transform.forward * Input.GetAxis("Vertical") +
+            transform.right * Input.GetAxis("Horizontal")) * speed * Time.deltaTime;
 
-        rigidBody.velocity = vel;
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) &&
+            combat.PEnergy > sprintDrainRate * Time.deltaTime)
+        {
+            combat.PEnergy -= sprintDrainRate * Time.deltaTime;
+
+            if (combat.PEnergy > sprintDrainRate * Time.deltaTime * 2)
+                movement *= sprintFactor;
+        }
+
+        rigidBody.MovePosition(movement + transform.position);
     }
 
     void UpdateDirection()

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerCombat : MonoBehaviour
 {
     private int pHealth;
+    private int pHealthMax;
     private uint pScore;
     private float timer;
     private float pInvunerability; //stores how long the player is invunerable after being hit
@@ -18,7 +19,8 @@ public class PlayerCombat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        pHealth = 3;
+        pHealthMax = 5;
+        pHealth = 5;
 
         //make sure the max energy is set
         if (pEnergyMax <= 0)
@@ -57,14 +59,7 @@ public class PlayerCombat : MonoBehaviour
         {
             pEnergy = pEnergyMax;
         }
-        /*
-        if (rechargeTimer >= 1 / pRechargeRate && pEnergy != pEnergyMax)
-        {
-            //pEnergy++;
-            pEnergy ++;
-            rechargeTimer = 0;
-        }
-        */
+       
 
     }
 
@@ -74,22 +69,45 @@ public class PlayerCombat : MonoBehaviour
     /// Currently does nothing
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision)
-    {
-        //picking up item       
-        if (collision.gameObject.tag == "Item")
-        {
-
-        }
-
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Goal")
         {
             Debug.Log("You Win, NERD!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            // Scene 2 is the win screen
+            SceneManager.LoadScene(2);
+
+            // Change the Game State to Menu
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+
+            // unlock and show curser
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
+
+        //Health pick up   
+        if (other.gameObject.tag == "HealthPickUp")
+        {
+            pHealth += 1;
+            //incase we exceed the max
+            if (PHealth > pHealthMax)
+            {
+                pHealth = pHealthMax;
+            }
+            Destroy(other.gameObject);
+            Debug.Log("Health Pick up");
+        }
+
+        //energy pick up
+        if (other.gameObject.tag == "EnergyPickUp")
+        {
+            pEnergyMax += 3;
+            pEnergy = pEnergyMax;
+            Destroy(other.gameObject);
+            Debug.Log("Energy Pick up");
+        }
+
 
     }
 
@@ -107,7 +125,16 @@ public class PlayerCombat : MonoBehaviour
         if (pHealth <= 0)
         {
             Debug.Log("You lose, NERD!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            // Scene 1 is the death screen
+            SceneManager.LoadScene(1);
+
+            // Change the Game State to Menu
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+
+            // unlock and show curser
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 

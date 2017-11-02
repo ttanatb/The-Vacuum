@@ -11,7 +11,7 @@ public class ProjectileScript : MonoBehaviour
     private Vector3 position;
     private Vector3 velocity;
     private float timer;
-
+    Rigidbody rigidBody;
 
 
     void Start()
@@ -24,8 +24,8 @@ public class ProjectileScript : MonoBehaviour
 
         //projectile moves only forward(gun propulsion) and down(Gravity)
         //velocity = new Vector3(0, -gravityMultiplier, -speed);
-        velocity = speed * transform.forward + Vector3.down * gravityMultiplier;
-
+        rigidBody = gameObject.GetComponent<Rigidbody>();
+        rigidBody.AddForce(gameObject.transform.forward * 10, ForceMode.Impulse);
 
     }
 
@@ -38,10 +38,8 @@ public class ProjectileScript : MonoBehaviour
             Destroy(gameObject);
         }
         //updating the timer and position here
-
-        position += velocity * Time.deltaTime;
         timer += Time.deltaTime;
-        gameObject.transform.position = position;
+       
 
     }
     private void OnCollisionEnter(Collision collision)
@@ -62,8 +60,8 @@ public class ProjectileScript : MonoBehaviour
 
         if (collision.gameObject.tag == "RangedEnemy" && gameObject.tag !="Enemy")
         {
-           RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
-           eScript.TakeDamage(outDamage);
+            RangedEnemyScript eScript = collision.gameObject.GetComponent<RangedEnemyScript>();
+            eScript.TakeDamage(outDamage);
         }
 
         else if (collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
