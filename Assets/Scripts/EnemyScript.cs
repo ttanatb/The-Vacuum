@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyScript : MonoBehaviour {
     public Rigidbody toSeek;
     public GameObject lootDrop;
+    public GameObject altLootDrop;
     public int inverseDropChance=4;
     public int outDamage =2;
     public int Health;  
@@ -35,6 +36,11 @@ public class EnemyScript : MonoBehaviour {
                     GameObject DroppedHealthPack = (GameObject)  Instantiate(lootDrop, myBody.transform);
                     DroppedHealthPack.transform.SetParent(gameObject.transform.parent, true);
                  }
+                else if (Random.Range(0, inverseDropChance) == 1)// if we generate the right number, drop a healthpack.
+                {
+                    GameObject DroppedEnergyPack = (GameObject)Instantiate(altLootDrop, myBody.transform);
+                    DroppedEnergyPack.transform.SetParent(gameObject.transform.parent, true);
+                }
                 isActive = false;
                 
                 Destroy(gameObject);
