@@ -65,7 +65,7 @@ public class PlayerCombat : MonoBehaviour
            
         }
         rechargeTimer += Time.deltaTime;
-        Debug.Log(rechargeTimer);
+        //Debug.Log(rechargeTimer);
 
 
         // Testing new ways for recharge for the gun
