@@ -18,7 +18,8 @@ public class PlayerCombat : MonoBehaviour
     private AudioSource pickUpAudio;
     private Vector2 pitch = new Vector2(0.8f, 1.2f);
 
-
+    private AudioSource hurtAudio;
+    public AudioClip hurtAudioClip;
 
     // Use this for initialization
     void Start()
@@ -39,7 +40,10 @@ public class PlayerCombat : MonoBehaviour
 
 
         pickUpAudio = GetComponent<AudioSource>();
-
+        hurtAudio = gameObject.AddComponent<AudioSource>();
+        hurtAudio.playOnAwake = false;
+        hurtAudio.clip = hurtAudioClip;
+        hurtAudio.volume = 0.8f;
     }
 
     // Update is called once per frame
@@ -135,7 +139,8 @@ public class PlayerCombat : MonoBehaviour
         {
             pHealth -= damageAmount;
             timer += Time.deltaTime;
-            
+            hurtAudio.pitch = Random.Range(pitch.x, pitch.y);
+            hurtAudio.Play();
         }
         if (pHealth <= 0)
         {
