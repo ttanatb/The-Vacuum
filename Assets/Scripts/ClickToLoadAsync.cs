@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClickToLoadAsync : MonoBehaviour {
 
-    public Slider loadingBar;
-    public GameObject loadingImage;
+    public Text scoreText;
 
     private GameObject gameManager;
 
@@ -16,6 +16,12 @@ public class ClickToLoadAsync : MonoBehaviour {
     private void Start()
     {
         gameManager = GameObject.Find("GameManager");
+
+        if(scoreText)
+        {
+            scoreText.text = GameObject.Find("ScoreManagerObject").GetComponent<ScoreManager>().Score.ToString();
+        }
+
     }
 
     public void ResumeClick()
@@ -32,7 +38,7 @@ public class ClickToLoadAsync : MonoBehaviour {
     public void PlayGame(int level)
     {
         // Load current level in the gameManager
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(level);
 
         GameManagerScript.Instance.CurrentGameState = GameState.Play;
         // Resume the game
@@ -50,9 +56,19 @@ public class ClickToLoadAsync : MonoBehaviour {
     public void ExitGame(int level)
     {
         // Load current level in the gameManager
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(level);
 
-        GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+        if (GameManagerScript.Instance)
+        {
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+        }
+
+
+        // Check to see if an existing ScoreManager exists
+        if (GameObject.Find("ScoreManagerObject"))
+        {
+            Destroy(GameObject.Find("ScoreManagerObject"));
+        }
     }
 
     /// <summary>
@@ -62,7 +78,7 @@ public class ClickToLoadAsync : MonoBehaviour {
     public void LoadScene(int level)
     {
         // Load current level in the gameManager
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(level);
     }
 
     /// <summary>
@@ -97,11 +113,10 @@ public class ClickToLoadAsync : MonoBehaviour {
     /// <returns></returns>
     IEnumerator LoadLevelWithBar (int level)
     {
-        async = Application.LoadLevelAsync(level);
+        async = SceneManager.LoadSceneAsync(level);
 
         while(!async.isDone) // Check to see if the level is completely loaded
         {
-            loadingBar.value = async.progress;
             yield return null;
         }
     }
