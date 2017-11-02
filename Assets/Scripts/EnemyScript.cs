@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour {
+    public AudioClip die;
+
     public Rigidbody toSeek;
     public GameObject lootDrop;
     public GameObject altLootDrop;
@@ -14,8 +16,8 @@ public class EnemyScript : MonoBehaviour {
     public Rigidbody myBody;
     public NavMeshAgent myAgent;
     // Use this for initialization
-    void Start () {
-     
+    protected virtual void Start () {
+        GetComponent<AudioSource>().pitch = Random.Range(0.6f, 1.4f);
 	}
 	
 	// Update is called once per frame
@@ -43,12 +45,24 @@ public class EnemyScript : MonoBehaviour {
                 }
                 isActive = false;
                 
-                Destroy(gameObject);
+                Destroy(gameObject, die.length);
+                PlayDeathAudio();
+                transform.GetChild(0).gameObject.SetActive(false);
             }
         }
     }
 
-   
+    private void PlayDeathAudio()
+    {
+        AudioSource audio = GetComponent<AudioSource>();
+        if (audio.isPlaying)
+            audio.Stop();
+
+        audio.clip = die;
+        audio.Play();
+    }
+
+
 
     private void OnDestroy()
     {

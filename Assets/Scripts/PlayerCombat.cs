@@ -15,6 +15,10 @@ public class PlayerCombat : MonoBehaviour
     public int pEnergyMax;
     private float rechargeTimer;
 
+    private AudioSource pickUpAudio;
+    private Vector2 pitch = new Vector2(0.8f, 1.2f);
+
+
 
     // Use this for initialization
     void Start()
@@ -30,6 +34,8 @@ public class PlayerCombat : MonoBehaviour
         pEnergy = pEnergyMax;
         pScore = 0;
         rechargeTimer = 0;
+
+        pickUpAudio = GetComponent<AudioSource>();
 
     }
 
@@ -97,6 +103,8 @@ public class PlayerCombat : MonoBehaviour
             }
             Destroy(other.gameObject);
             Debug.Log("Health Pick up");
+            PlayPickUpAudio();
+
         }
 
         //energy pick up
@@ -106,6 +114,8 @@ public class PlayerCombat : MonoBehaviour
             pEnergy = pEnergyMax;
             Destroy(other.gameObject);
             Debug.Log("Energy Pick up");
+            PlayPickUpAudio();
+
         }
 
 
@@ -158,6 +168,17 @@ public class PlayerCombat : MonoBehaviour
         {
             pEnergy = pEnergyMax;
         }
+
+        PlayPickUpAudio();
+    }
+
+    private void PlayPickUpAudio()
+    {
+        if (pickUpAudio.isPlaying)
+            pickUpAudio.Stop();
+
+        pickUpAudio.pitch = Random.Range(pitch.x, pitch.y);
+        pickUpAudio.Play();
     }
 
 

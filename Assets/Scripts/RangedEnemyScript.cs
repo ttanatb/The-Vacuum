@@ -16,11 +16,21 @@ public class RangedEnemyScript : EnemyScript {
     private bool onCooldown;
     private bool onShootCooldown;    
     public RaycastHit HitHolder;
+
+
+    private AudioSource shootingAudio;
+    public AudioClip laser;
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
         myBody = GetComponent<Rigidbody>();
         myAgent = GetComponent<NavMeshAgent>();
+
+        base.Start();
+
+        shootingAudio = gameObject.AddComponent<AudioSource>();
+        shootingAudio.playOnAwake = false;
+        shootingAudio.clip = laser;
     }
 
     // Update is called once per frame
@@ -106,6 +116,10 @@ public class RangedEnemyScript : EnemyScript {
         onShootCooldown = true;
         shootCooldown = maxShootCooldown;
         cooldown = maxCooldown / 2;
+
+
+        shootingAudio.pitch = Random.Range(0.5f, 0.9f);
+        shootingAudio.Play();
     }
 
   

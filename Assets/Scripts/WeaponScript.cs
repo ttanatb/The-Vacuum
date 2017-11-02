@@ -13,7 +13,8 @@ public class WeaponScript : MonoBehaviour
     private GameObject player;
     private PlayerCombat playerCombat;
     private Weapons currentWeapon;
-    
+    private AudioSource shootAudio;
+    public AudioClip laser;
     /// <summary>
     /// Different kinds of weapons.
     /// </summary>
@@ -27,6 +28,9 @@ public class WeaponScript : MonoBehaviour
         Random.InitState((int)Time.time);
         currentWeapon = Weapons.MiniProjector;
 
+        shootAudio = gameObject.AddComponent<AudioSource>();
+        shootAudio.playOnAwake = false;
+        shootAudio.clip = laser;
     }
 
     // Update is called once per frame
@@ -111,6 +115,9 @@ public class WeaponScript : MonoBehaviour
         
         //start the timer
         fireTimer += Time.deltaTime;
+
+        shootAudio.pitch = Random.Range(1.1f, 1.5f);
+        shootAudio.Play();
     }
     
 }
