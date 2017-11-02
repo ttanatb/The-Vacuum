@@ -55,7 +55,7 @@ public class ProjectileScript : MonoBehaviour
         tempParticleSystem.transform.SetParent(null);
 
 
-        Debug.Log("Colliding with " + collision.gameObject);
+        //Debug.Log("Colliding with " + collision.gameObject);
 
         //collision with an enemy
         if (collision.gameObject.tag == "Enemy")

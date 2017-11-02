@@ -110,7 +110,7 @@ public class PlayerCombat : MonoBehaviour
                 pHealth = pHealthMax;
             }
             Destroy(other.gameObject);
-            Debug.Log("Health Pick up");
+            //Debug.Log("Health Pick up");
             PlayPickUpAudio();
 
         }
@@ -121,7 +121,7 @@ public class PlayerCombat : MonoBehaviour
             pEnergyMax += 3;
             pEnergy = pEnergyMax;
             Destroy(other.gameObject);
-            Debug.Log("Energy Pick up");
+            //Debug.Log("Energy Pick up");
             PlayPickUpAudio();
 
         }

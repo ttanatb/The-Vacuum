@@ -68,18 +68,18 @@ public class WeaponScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentWeapon = Weapons.MiniProjector;
-            Debug.Log("Mini Projector Equiped");
+            //Debug.Log("Mini Projector Equiped");
             wFireRate = 2;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentWeapon = Weapons.ScatterProjector;
-            Debug.Log("Scatter Projector Equiped");
+            //Debug.Log("Scatter Projector Equiped");
             wFireRate = 1;
         }else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentWeapon = Weapons.AutoProjector;
-            Debug.Log("Auto Projector Equiped");
+            //Debug.Log("Auto Projector Equiped");
             wFireRate = 5;
         }
 
