@@ -14,6 +14,8 @@ public class ProjectileScript : MonoBehaviour
     Rigidbody rigidBody;
     public GameObject particleSystem;
 
+    public Transform sourceTransform;
+
 
     void Start()
     {
@@ -80,7 +82,12 @@ public class ProjectileScript : MonoBehaviour
         else if (collision.gameObject.tag == "Player" && gameObject.tag == "Enemy")
         {
             PlayerCombat pScript = collision.gameObject.GetComponent<PlayerCombat>();
-            pScript.TakeDamage(outDamage, collision.transform.position);//have them take damage
+
+            if (sourceTransform)
+            {
+                pScript.TakeDamage(outDamage, sourceTransform.position);//have them take damage
+            }
+            else pScript.TakeDamage(outDamage, collision.transform.position);//have them take damage
 
             
 
