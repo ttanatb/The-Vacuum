@@ -67,7 +67,7 @@ public class ClickToLoadAsync : MonoBehaviour {
         // Check to see if an existing ScoreManager exists
         if (GameObject.Find("ScoreManagerObject"))
         {
-            Destroy(gameObject);
+            Destroy(GameObject.Find("ScoreManagerObject"));
         }
     }
 
