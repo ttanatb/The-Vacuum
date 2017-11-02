@@ -11,7 +11,8 @@ public class Room : MonoBehaviour
         Turn,
         T,
         Cross,
-        BigRoom
+        BigRoom,
+        Cap
     }
 
     private RoomType type;
@@ -36,6 +37,10 @@ public class Room : MonoBehaviour
         {
             type = RoomType.Turn;
         }
+        else if (gameObject.name.Contains("Cap"))
+        {
+            type = RoomType.Cap;
+        }
         else if (gameObject.name.Contains("T"))
         {
             type = RoomType.T;
@@ -45,7 +50,7 @@ public class Room : MonoBehaviour
     private void Update()
     {
         #region debug
-        /*
+
         switch (type)
         {
             case RoomType.Straight:
@@ -63,8 +68,11 @@ public class Room : MonoBehaviour
                 Debug.DrawLine(transform.position, transform.position - transform.up, Color.green);
 
                 break;
+            case RoomType.Cap:
+                Debug.DrawLine(transform.position, transform.position - transform.up * 4f, Color.blue);
+                break;
         }
-        */
+
         #endregion
     }
 
@@ -120,6 +128,10 @@ public class Room : MonoBehaviour
                 positions[2] = transform.position + transform.up * 4f;
                 positions[3] = transform.position + transform.right * 4f;
                 break;
+            case RoomType.Cap:
+                positions = new Vector3[1];
+                positions[0] = transform.position - transform.up * 2f;
+                break;
         }
 
         return positions;
@@ -155,6 +167,10 @@ public class Room : MonoBehaviour
                 break;
             case RoomType.BigRoom:
                 positions = new Vector3[0];
+                break;
+            case RoomType.Cap:
+                positions = new Vector3[1];
+                positions[0] = transform.position - transform.up * 4f;
                 break;
         }
 
