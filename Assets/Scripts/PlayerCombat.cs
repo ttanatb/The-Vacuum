@@ -69,30 +69,6 @@ public class PlayerCombat : MonoBehaviour
     /// Currently does nothing
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision)
-    {
-        //Health pick up   
-        if (collision.gameObject.tag == "HealthPickUp")
-        {
-            pHealth += 3;
-            //incase we exceed the max
-            if (PHealth > pHealthMax)
-            {
-                pHealth = pHealthMax;
-            }
-            Destroy(collision.gameObject);
-            Debug.Log("Health Pick up");
-        }
-
-        //energy pick up
-        if (collision.gameObject.tag == "EnergyPickUp")
-        {
-            pEnergyMax += 3;
-            pEnergy = pEnergyMax;
-            Destroy(collision.gameObject);
-            Debug.Log("Energy Pick up");
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Goal")
@@ -109,6 +85,29 @@ public class PlayerCombat : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
+
+        //Health pick up   
+        if (other.gameObject.tag == "HealthPickUp")
+        {
+            pHealth += 1;
+            //incase we exceed the max
+            if (PHealth > pHealthMax)
+            {
+                pHealth = pHealthMax;
+            }
+            Destroy(other.gameObject);
+            Debug.Log("Health Pick up");
+        }
+
+        //energy pick up
+        if (other.gameObject.tag == "EnergyPickUp")
+        {
+            pEnergyMax += 3;
+            pEnergy = pEnergyMax;
+            Destroy(other.gameObject);
+            Debug.Log("Energy Pick up");
+        }
+
 
     }
 
