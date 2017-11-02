@@ -40,7 +40,10 @@ public class ClickToLoadAsync : MonoBehaviour {
         // Load current level in the gameManager
         SceneManager.LoadScene(level);
 
-        GameManagerScript.Instance.CurrentGameState = GameState.Play;
+        if (GameManagerScript.Instance)
+        {
+            GameManagerScript.Instance.CurrentGameState = GameState.Play;
+        }
         // Resume the game
         Time.timeScale = 1;
 
