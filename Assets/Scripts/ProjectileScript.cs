@@ -53,7 +53,9 @@ public class ProjectileScript : MonoBehaviour
         tempParticleSystem.transform.forward = gameObject.transform.forward*-1;
 
         tempParticleSystem.transform.SetParent(null);
-        
+
+
+        Debug.Log("Colliding with " + collision.gameObject);
 
         //collision with an enemy
         if (collision.gameObject.tag == "Enemy")

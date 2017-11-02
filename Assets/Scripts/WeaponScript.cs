@@ -19,7 +19,7 @@ public class WeaponScript : MonoBehaviour
     /// Different kinds of weapons.
     /// </summary>
     enum Weapons { AutoProjector, MiniProjector, ScatterProjector}
-    
+
     // Use this for initialization
     void Start()
     {
@@ -31,6 +31,7 @@ public class WeaponScript : MonoBehaviour
         shootAudio = gameObject.AddComponent<AudioSource>();
         shootAudio.playOnAwake = false;
         shootAudio.clip = laser;
+
     }
 
     // Update is called once per frame
