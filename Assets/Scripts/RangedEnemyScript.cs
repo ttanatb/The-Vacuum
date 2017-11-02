@@ -15,12 +15,15 @@ public class RangedEnemyScript : EnemyScript
     public float shootCooldown;
     public float cooldown;
     private bool onCooldown;
-    private bool onShootCooldown;
+    private bool onShootBackSwing;
     public RaycastHit HitHolder;
-
 
     private AudioSource shootingAudio;
     public AudioClip laser;
+
+    public LayerMask layerMask;
+
+    private Animator animator;
     // Use this for initialization
     protected override void Start()
     {
@@ -32,6 +35,8 @@ public class RangedEnemyScript : EnemyScript
         shootingAudio = gameObject.AddComponent<AudioSource>();
         shootingAudio.playOnAwake = false;
         shootingAudio.clip = laser;
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -40,20 +45,33 @@ public class RangedEnemyScript : EnemyScript
         if (isActive && toSeek != null)//if we are alive, and have something to seek
         {
             Tick();
-            if (!onCooldown)//and active
+            if (onCooldown || onShootBackSwing)
             {
-                Vector3 direction = toSeek.transform.position - gameObject.transform.position;
+                myAgent.isStopped = true; ;//if we are inactive, don't move at all   
 
-                if (Physics.Raycast(gameObject.transform.position, direction, out HitHolder))
+                Vector3 newDirection = toSeek.transform.position - transform.position;
+                newDirection.y = transform.forward.y;
+                transform.forward = Vector3.Lerp(transform.forward, newDirection, Time.deltaTime * 10f);
+            }
+            else
+            {
+                Vector3 direction = toSeek.transform.position - Vector3.up * 0.1f - gameObject.transform.position;
+
+                if (Physics.Raycast(gameObject.transform.position, direction, out HitHolder, 6f, layerMask))
                 {
-                    if (HitHolder.collider.tag == "Player" && !onShootCooldown)
+                    if (HitHolder.collider.tag == "Player" && !onShootBackSwing)
                     {
                         myAgent.isStopped = true;
                         Shoot();
+                        Vector3 newDirection = toSeek.transform.position - transform.position;
+                        newDirection.y = transform.forward.y;
+                        transform.forward = Vector3.Lerp(transform.forward, newDirection, Time.deltaTime * 10f);
                     }
-                    else if (onShootCooldown)
+                    else
                     {
-                        myAgent.isStopped = true;
+                        animator.SetBool("Shooting", false);
+                        myAgent.isStopped = false;
+                        myAgent.destination = toSeek.transform.position;
                     }
                 }
                 else
@@ -62,12 +80,6 @@ public class RangedEnemyScript : EnemyScript
                     myAgent.destination = toSeek.transform.position;//move towards stuff
                 }
             }
-            else
-            {
-                myAgent.isStopped = true; ;//if we are inactive, don't move at all             
-
-            }
-
         }
     }
 
@@ -91,11 +103,11 @@ public class RangedEnemyScript : EnemyScript
             }
         }
 
-        if (onShootCooldown)
+        if (onShootBackSwing)
         {
             if (shootCooldown <= 0)
             {
-                onShootCooldown = false;
+                onShootBackSwing = false;
             }
         }
     }
@@ -103,25 +115,24 @@ public class RangedEnemyScript : EnemyScript
     public void Shoot()
     {
         //Transform bulletTransform = myBody.transform;
-
-
         GameObject enemyBullet = (GameObject)Instantiate(projectilePrefab, myBody.transform.position, Quaternion.identity);
         Physics.IgnoreCollision(enemyBullet.GetComponent<Collider>(), GetComponent<Collider>());
-
 
         Vector3 enemyPosition = toSeek.transform.position;
         enemyPosition.x += Random.Range(-InaccuracyValue, InaccuracyValue) / 10;
         enemyPosition.z += Random.Range(-InaccuracyValue, InaccuracyValue) / 10;
         enemyBullet.transform.forward = (enemyPosition - enemyBullet.transform.position);//Accuracy
 
-        //Debug.Log("pew-pew");
-        onShootCooldown = true;
+        enemyBullet.GetComponent<ProjectileScript>().sourceTransform = transform;
+
+        onShootBackSwing = true;
         shootCooldown = maxShootCooldown;
         cooldown = maxCooldown / 2;
 
-
         shootingAudio.pitch = Random.Range(0.5f, 0.9f);
         shootingAudio.Play();
+
+        animator.SetBool("Shooting", true);
     }
 
 
