@@ -31,16 +31,24 @@ public class RangedEnemyScript : EnemyScript {
             Tick();
             if (!onCooldown)//and active
             {
-                myAgent.isStopped = false;
-                myAgent.destination = toSeek.transform.position;//move towards stuff
+
+               
                 Vector3 direction = toSeek.transform.position - gameObject.transform.position;
              
                 Physics.Raycast(gameObject.transform.position, direction, out HitHolder);
                 if (HitHolder.collider.tag == "Player" && !onShootCooldown)
                 {
+                    myAgent.isStopped = true;
                     Shoot();
                 }
-
+                else if (onShootCooldown)
+                {
+                    myAgent.isStopped = true;                    
+                }
+                else{
+                    myAgent.isStopped = false;
+                    myAgent.destination = toSeek.transform.position;//move towards stuff
+                }
             }
             else
             {
