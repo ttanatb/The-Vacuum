@@ -29,7 +29,10 @@ public class PlayerCombat : MonoBehaviour
         }
         pEnergy = pEnergyMax;
         pScore = 0;
+        pInvunerability = 1.0f;
         rechargeTimer = 0;
+        timer = 0;
+
 
     }
 
@@ -49,6 +52,7 @@ public class PlayerCombat : MonoBehaviour
         else if (timer > 0)
         {
             timer += Time.deltaTime;
+           
         }
         rechargeTimer += Time.deltaTime;
 
@@ -73,7 +77,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (other.gameObject.tag == "Goal")
         {
-            Debug.Log("You Win, NERD!");
+           
 
             // Scene 2 is the win screen
             SceneManager.LoadScene(2);
@@ -121,10 +125,11 @@ public class PlayerCombat : MonoBehaviour
         {
             pHealth -= damageAmount;
             timer += Time.deltaTime;
+            
         }
         if (pHealth <= 0)
         {
-            Debug.Log("You lose, NERD!");
+            
 
             // Scene 1 is the death screen
             SceneManager.LoadScene(1);
