@@ -8,7 +8,6 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
     // Attributes
     // Reference to the player and GameManager
     private GameObject player;
-    private GameObject gameManager;
 
     // Menu references
     private GameObject pauseMenu;
@@ -35,7 +34,6 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
     {
         // Assign the reference to the player object
         player = GameObject.FindGameObjectWithTag("Player");
-        gameManager = GameObject.Find("GameManager");
         pauseMenu = transform.Find("PauseMenu").gameObject;
 
         // Set max health and energy for guns

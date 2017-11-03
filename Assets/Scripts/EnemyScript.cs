@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour {
+    public AudioClip die;
+
     public Rigidbody toSeek;
     public GameObject lootDrop;
+    public GameObject altLootDrop;
     public int inverseDropChance=4;
     public int outDamage =2;
     public int Health;  
@@ -13,8 +16,8 @@ public class EnemyScript : MonoBehaviour {
     public Rigidbody myBody;
     public NavMeshAgent myAgent;
     // Use this for initialization
-    void Start () {
-     
+    protected virtual void Start () {
+        GetComponent<AudioSource>().pitch = Random.Range(0.6f, 1.4f);
 	}
 	
 	// Update is called once per frame
@@ -35,18 +38,27 @@ public class EnemyScript : MonoBehaviour {
                     GameObject DroppedHealthPack = (GameObject)  Instantiate(lootDrop, myBody.transform);
                     DroppedHealthPack.transform.SetParent(gameObject.transform.parent, true);
                  }
+                else if (Random.Range(0, inverseDropChance) == 1)// if we generate the right number, drop a healthpack.
+                {
+                    GameObject DroppedEnergyPack = (GameObject)Instantiate(altLootDrop, myBody.transform);
+                    DroppedEnergyPack.transform.SetParent(gameObject.transform.parent, true);
+                }
                 isActive = false;
                 
-                Destroy(gameObject);
+                Destroy(gameObject, die.length);
+                PlayDeathAudio();
+                transform.GetChild(0).gameObject.SetActive(false);
             }
         }
     }
 
-   
-
-    private void OnDestroy()
+    private void PlayDeathAudio()
     {
-        if (ScoreManager.Instance)
-            ScoreManager.Instance.IncrementScore(5);
+        AudioSource audio = GetComponent<AudioSource>();
+        if (audio.isPlaying)
+            audio.Stop();
+
+        audio.clip = die;
+        audio.Play();
     }
 }

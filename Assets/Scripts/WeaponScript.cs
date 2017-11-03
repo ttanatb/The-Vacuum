@@ -13,12 +13,13 @@ public class WeaponScript : MonoBehaviour
     private GameObject player;
     private PlayerCombat playerCombat;
     private Weapons currentWeapon;
-    
+    private AudioSource shootAudio;
+    public AudioClip laser;
     /// <summary>
     /// Different kinds of weapons.
     /// </summary>
     enum Weapons { AutoProjector, MiniProjector, ScatterProjector}
-    
+
     // Use this for initialization
     void Start()
     {
@@ -26,6 +27,10 @@ public class WeaponScript : MonoBehaviour
         playerCombat = player.GetComponent<PlayerCombat>();
         Random.InitState((int)Time.time);
         currentWeapon = Weapons.MiniProjector;
+
+        shootAudio = gameObject.AddComponent<AudioSource>();
+        shootAudio.playOnAwake = false;
+        shootAudio.clip = laser;
 
     }
 
@@ -63,18 +68,18 @@ public class WeaponScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentWeapon = Weapons.MiniProjector;
-            Debug.Log("Mini Projector Equiped");
+            //Debug.Log("Mini Projector Equiped");
             wFireRate = 2;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentWeapon = Weapons.ScatterProjector;
-            Debug.Log("Scatter Projector Equiped");
+            //Debug.Log("Scatter Projector Equiped");
             wFireRate = 1;
         }else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentWeapon = Weapons.AutoProjector;
-            Debug.Log("Auto Projector Equiped");
+            //Debug.Log("Auto Projector Equiped");
             wFireRate = 5;
         }
 
@@ -111,6 +116,9 @@ public class WeaponScript : MonoBehaviour
         
         //start the timer
         fireTimer += Time.deltaTime;
+
+        shootAudio.pitch = Random.Range(1.1f, 1.5f);
+        shootAudio.Play();
     }
     
 }

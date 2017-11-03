@@ -132,8 +132,8 @@ public class MapGraph : SingletonMonoBehaviour<MapGraph>
                         }
                     }
                 }
-                if (count != neighbors.Length && !nodes[i].Data.name.Contains("Room_Cross"))
-                    Debug.LogError(nodes[i].Data.name + " did not connect properly");
+                //if (count != neighbors.Length && !nodes[i].Data.name.Contains("Room_Cross"))
+                    //Debug.LogError(nodes[i].Data.name + " did not connect properly");
 
             }
 

@@ -13,13 +13,16 @@ public class MeleeEnemyScript : EnemyScript {
 
 
 	// Use this for initialization
-	void Start () {
+    protected override void Start()
+    {
         myBody = GetComponent<Rigidbody>();
         myAgent = GetComponent<NavMeshAgent>();
+
+        base.Start();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (isActive && toSeek != null)//if we are alive, and have something to seek
         {
             Tick();
@@ -67,4 +70,12 @@ public class MeleeEnemyScript : EnemyScript {
         }
 
     }
+
+    private void OnDestroy()
+    {
+        if (ScoreManager.Instance)
+            ScoreManager.Instance.IncrementScore(10);
+    }
+
+
 }
