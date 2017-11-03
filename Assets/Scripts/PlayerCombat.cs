@@ -127,6 +127,9 @@ public class PlayerCombat : MonoBehaviour
 
             // Give the user 50 points for getting an energy sphere
             ScoreManager.Instance.IncrementScore(1000);
+            
+            // Increase Max Energy for the GUI
+            GUIManagerScript.Instance.IncreaseMaxEnergyGUI();
         }
 
 

@@ -41,7 +41,7 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
     public void EndLevelIncrementScore()
     {
         // Give the user points dependent it takes for them to escape
-        Debug.Log((int)(10000000 / (timeInGame * timeInGame)));
+        //Debug.Log((int)(10000000 / (timeInGame * timeInGame)));
         IncrementScore((int)(10000000 / (timeInGame * timeInGame)));
     }
 

@@ -38,7 +38,7 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
 
         // Set max health and energy for guns
         maxHealth = player.GetComponent<PlayerCombat>().PHealth;
-        maxEnergy = player.GetComponent<PlayerCombat>().PEnergy;
+        maxEnergy = player.GetComponent<PlayerCombat>().pEnergyMax;
         healthBar.maxValue = maxHealth;
         energyBar.maxValue = maxEnergy;
 
@@ -86,6 +86,11 @@ public class GUIManagerScript : SingletonMonoBehaviour<GUIManagerScript>
     {
         hurtFlash.FlashRed();
         hurtFlash.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, degree);
+    }
+
+    public void IncreaseMaxEnergyGUI()
+    {
+        energyBar.maxValue = player.GetComponent<PlayerCombat>().pEnergyMax;
     }
 
 }

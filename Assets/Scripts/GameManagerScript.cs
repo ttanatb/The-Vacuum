@@ -78,6 +78,7 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
             // unlock and show curser
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            //Debug.Log("Unlocked Mouse");
 
         }
         // If you are paused resume the game
@@ -92,6 +93,7 @@ public class GameManagerScript : SingletonMonoBehaviour<GameManagerScript>
             // Lock and hide the curser
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            //Debug.Log("Locked Mouse");
         }
         ToggleAudioListener();
 

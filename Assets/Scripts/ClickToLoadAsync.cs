@@ -100,7 +100,10 @@ public class ClickToLoadAsync : MonoBehaviour {
     {
         // Load current level in the gameManager
         unhiddenGameObject.SetActive(false);
-        GameManagerScript.Instance.CurrentGameState = GameState.Paused;
+        if (GameManagerScript.Instance)
+        {
+            GameManagerScript.Instance.CurrentGameState = GameState.Paused;
+        }
     }
 
 
