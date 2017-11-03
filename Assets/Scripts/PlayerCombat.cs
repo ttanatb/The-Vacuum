@@ -65,7 +65,6 @@ public class PlayerCombat : MonoBehaviour
            
         }
         rechargeTimer += Time.deltaTime;
-        //Debug.Log(rechargeTimer);
 
 
         // Testing new ways for recharge for the gun
@@ -74,8 +73,6 @@ public class PlayerCombat : MonoBehaviour
         {
             pEnergy = pEnergyMax;
         }
-       
-
     }
 
     /// <summary>
@@ -100,8 +97,8 @@ public class PlayerCombat : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            // Give the user 50 points for getting an energy sphere
-            ScoreManager.Instance.IncrementScore((int)(5000 / ((rechargeTimer*rechargeTimer)/5000)));
+            // Increase the end score by a certain amount based on the timer
+            ScoreManager.Instance.EndLevelIncrementScore();
         }
 
         //Health pick up   
@@ -129,7 +126,7 @@ public class PlayerCombat : MonoBehaviour
             PlayPickUpAudio();
 
             // Give the user 50 points for getting an energy sphere
-            ScoreManager.Instance.IncrementScore(50);
+            ScoreManager.Instance.IncrementScore(1000);
         }
 
 

@@ -44,7 +44,20 @@ public class EnemyScript : MonoBehaviour {
                     DroppedEnergyPack.transform.SetParent(gameObject.transform.parent, true);
                 }
                 isActive = false;
-                
+
+                // Increase points on death of an enemy
+                if (ScoreManager.Instance)
+                {
+                    if (gameObject.GetComponent<RangedEnemyScript>())
+                    {
+                        ScoreManager.Instance.IncrementScore(200);
+                    }
+                    if (gameObject.GetComponent<MeleeEnemyScript>())
+                    {
+                        ScoreManager.Instance.IncrementScore(100);
+                    }
+
+                }
                 Destroy(gameObject, die.length);
                 PlayDeathAudio();
                 transform.GetChild(0).gameObject.SetActive(false);

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ClickToLoadAsync : MonoBehaviour {
 
     public Text scoreText;
+    public Text timeText;
 
     private GameObject gameManager;
 
@@ -21,6 +23,12 @@ public class ClickToLoadAsync : MonoBehaviour {
         {
             scoreText.text = ScoreManager.Instance.GetComponent<ScoreManager>().Score.ToString();
         }
+        if (timeText)
+        {
+            double totalTime = Math.Round(ScoreManager.Instance.GetComponent<ScoreManager>().TimeInGame, 2);
+            timeText.text = totalTime.ToString() + " seconds";
+        }
+
 
     }
 
@@ -104,7 +112,10 @@ public class ClickToLoadAsync : MonoBehaviour {
     {
         // Load current level in the gameManager
         hiddenGameObject.SetActive(true);
-        GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+        if (GameManagerScript.Instance)
+        {
+            GameManagerScript.Instance.CurrentGameState = GameState.Menu;
+        }
     }
 
 
