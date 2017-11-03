@@ -23,11 +23,9 @@ public class RifleGraphicsController : MonoBehaviour {
 
         //Set the scale to powerlevel
         Vector3 scale = powerTube.transform.localScale;
-        scale.y = Mathf.Clamp(powerLevel, 0, 1);
+        scale.y = Mathf.Clamp(powerLevel, 0, 1f);
         powerTube.transform.localScale = scale;
 
-        //set the material;
-        powerTube.GetComponent<MeshRenderer>().material = energyTypes[weaponType];
 
 
 	}
